@@ -1,0 +1,132 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Variables ────────────────────────────────── */
+:root {
+  --ember: #FF6B00;
+  --ink:   #08080A;
+  --cream: #FFF8EE;
+  --ease:  cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Base ─────────────────────────────────────── */
+@layer base {
+  html {
+    background: #08080A;
+    color: #FFF8EE;
+    font-family: 'Barlow', sans-serif;
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  h1,h2,h3,h4,h5,h6 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.01em;
+  }
+  ::selection { background: #FF6B00; color: #fff; }
+  ::-webkit-scrollbar        { width: 5px; }
+  ::-webkit-scrollbar-track  { background: #08080A; }
+  ::-webkit-scrollbar-thumb  { background: #FF6B00; border-radius: 3px; }
+}
+
+/* ── Components ───────────────────────────────── */
+@layer components {
+
+  .wrap { @apply max-w-[1320px] mx-auto px-5 sm:px-8 xl:px-12; }
+
+  /* Buttons */
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2.5
+           font-display font-extrabold text-lg uppercase tracking-wide
+           bg-ember-500 hover:bg-ember-400 text-white
+           px-8 py-3.5 rounded-none
+           transition-all duration-200
+           hover:-translate-y-px hover:shadow-[0_8px_30px_rgba(255,107,0,0.4)]
+           active:translate-y-0;
+  }
+  .btn-outline {
+    @apply inline-flex items-center justify-center gap-2.5
+           font-display font-extrabold text-lg uppercase tracking-wide
+           border-2 border-white/20 hover:border-ember-500
+           text-cream-100 hover:text-ember-400
+           px-8 py-3.5 rounded-none
+           transition-all duration-200;
+  }
+  .btn-sm { @apply !px-5 !py-2.5 !text-base !gap-2; }
+
+  /* Section label */
+  .lbl {
+    @apply inline-flex items-center gap-2.5
+           font-mono text-ember-500 text-xs tracking-[0.22em] uppercase;
+  }
+  .lbl::before { content:''; @apply block w-5 h-px bg-ember-500; }
+
+  /* Cards */
+  .card {
+    @apply bg-ink-800 border border-white/[0.07]
+           transition-all duration-300
+           hover:border-white/[0.15] hover:shadow-[0_20px_60px_rgba(0,0,0,0.5)];
+  }
+
+  /* Inputs */
+  .inp {
+    @apply w-full bg-ink-700 border border-white/10
+           px-4 py-3 text-cream-100 placeholder:text-mist
+           font-body text-base rounded-none
+           focus:outline-none focus:border-ember-500
+           transition-all duration-200;
+  }
+
+  /* Divider */
+  .hr { @apply border-t border-white/[0.07]; }
+
+  /* Skeleton */
+  .skel { @apply bg-ink-700 animate-pulse; }
+
+  /* Image zoom */
+  .zoom { @apply overflow-hidden; }
+  .zoom img { @apply w-full h-full object-cover transition-transform duration-700; }
+  .zoom:hover img { @apply scale-105; }
+
+  /* Gradient text */
+  .ember-text {
+    background: linear-gradient(135deg, #FFB87A, #FF6B00);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+}
+
+/* ── Page transition ──────────────────────────── */
+.page-enter-active,
+.page-leave-active { transition: opacity .2s ease, transform .2s ease; }
+.page-enter-from   { opacity: 0; transform: translateY(10px); }
+.page-leave-to     { opacity: 0; transform: translateY(-6px); }
+
+/* ── Ticker ───────────────────────────────────── */
+.ticker-wrap  { @apply overflow-hidden whitespace-nowrap; }
+.ticker-track { display: inline-block; animation: ticker 35s linear infinite; }
+
+/* ── Noise grain ──────────────────────────────── */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  width: 200%; height: 200%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: .025;
+  pointer-events: none;
+  z-index: 9999;
+  animation: grainmove 7s steps(8) infinite;
+}
+@keyframes grainmove {
+  0%,100% { transform:translate(0,0)    }
+  20%      { transform:translate(-4%,-8%)}
+  40%      { transform:translate(4%,6%) }
+  60%      { transform:translate(-3%,4%)}
+  80%      { transform:translate(3%,-5%)}
+}

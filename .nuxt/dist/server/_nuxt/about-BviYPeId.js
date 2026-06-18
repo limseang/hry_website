@@ -1,0 +1,91 @@
+import { u as useHead, _ as __nuxt_component_1 } from "../server.mjs";
+import { defineComponent, mergeProps, withCtx, createTextVNode, openBlock, createBlock, createVNode, useSSRContext } from "vue";
+import { ssrRenderAttrs, ssrRenderList, ssrInterpolate, ssrRenderAttr, ssrRenderComponent } from "vue/server-renderer";
+import "/Users/popcorn/Desktop/hry webiste/hry-nuxt/node_modules/ofetch/dist/node.mjs";
+import "#internal/nuxt/paths";
+import "/Users/popcorn/Desktop/hry webiste/hry-nuxt/node_modules/hookable/dist/index.mjs";
+import "/Users/popcorn/Desktop/hry webiste/hry-nuxt/node_modules/unctx/dist/index.mjs";
+import "/Users/popcorn/Desktop/hry webiste/hry-nuxt/node_modules/h3/dist/index.mjs";
+import "vue-router";
+import "/Users/popcorn/Desktop/hry webiste/hry-nuxt/node_modules/defu/dist/defu.mjs";
+import "/Users/popcorn/Desktop/hry webiste/hry-nuxt/node_modules/ufo/dist/index.mjs";
+import "/Users/popcorn/Desktop/hry webiste/hry-nuxt/node_modules/@unhead/vue/dist/index.mjs";
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  __name: "about",
+  __ssrInlineRender: true,
+  setup(__props) {
+    useHead({ title: "About — HRY Printing" });
+    const stats = [
+      { value: "2009", label: "Founded" },
+      { value: "15+", label: "Years Active" },
+      { value: "5K+", label: "Clients" },
+      { value: "50+", label: "Products" }
+    ];
+    const values = [
+      { title: "Precision", desc: "Every millimetre matters. We calibrate presses daily and proof every job before it runs.", icon: "M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" },
+      { title: "Speed", desc: "Rush printing with same-day pickup available. Your deadline is our deadline — no excuses.", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
+      { title: "Innovation", desc: "Constant investment in the latest digital and offset technology keeps our quality ahead.", icon: "M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" }
+    ];
+    const capabilities = [
+      { title: "Offset Printing", desc: "High-volume runs with Pantone color matching on our state-of-the-art offset presses.", icon: "M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" },
+      { title: "Digital Printing", desc: "Short runs and variable data printing with same-day turnaround capability.", icon: "M13 10V3L4 14h7v7l9-11h-7z" },
+      { title: "Large Format", desc: "Wide-format printing up to 5m wide for banners, vehicle wraps, and trade displays.", icon: "M8 3H5a2 2 0 00-2 2v3m18 0V5a2 2 0 00-2-2h-3m0 18h3a2 2 0 002-2v-3M3 16v3a2 2 0 002 2h3" },
+      { title: "Full Finishing", desc: "In-house lamination, foiling, embossing, die-cutting, and binding for a complete solution.", icon: "M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" }
+    ];
+    return (_ctx, _push, _parent, _attrs) => {
+      const _component_NuxtLink = __nuxt_component_1;
+      _push(`<div${ssrRenderAttrs(mergeProps({ class: "py-12 lg:py-20" }, _attrs))}><div class="wrap"><div class="lbl mb-6">Our Story</div><h1 class="font-display font-900 uppercase text-cream-100 leading-none text-[clamp(3rem,10vw,9rem)] mb-16 tracking-tight"> INK IN<br><span class="grad-text">OUR</span><br>BLOOD </h1><div class="grid lg:grid-cols-2 gap-16 items-center mb-20"><div class="space-y-5 font-body text-mist text-lg leading-relaxed"><p>HRY Printing was founded in 2009 with a single press, a shared passion for quality, and an uncompromising belief that great printing changes how people perceive a brand.</p><p>Today we operate a 3,000 sqm production facility in Bangkok, equipped with the latest offset and digital presses, wide-format plotters, and a complete in-house finishing department — serving thousands of businesses across Thailand.</p><p>From startups ordering their first business cards to national brands requiring millions of pieces — every job receives the same obsessive attention to detail.</p></div><div class="grid grid-cols-2 gap-px bg-white/[0.06] rounded-2xl overflow-hidden"><!--[-->`);
+      ssrRenderList(stats, (s) => {
+        _push(`<div class="bg-ink-900 flex flex-col items-center justify-center py-14 px-6 text-center"><div class="font-display font-900 text-6xl text-cream-100 mb-2">${ssrInterpolate(s.value)}</div><div class="font-mono text-[10px] text-mist uppercase tracking-widest">${ssrInterpolate(s.label)}</div></div>`);
+      });
+      _push(`<!--]--></div></div><div class="hr mb-20"></div><section class="mb-20"><div class="lbl mb-8">What Drives Us</div><div class="grid grid-cols-1 md:grid-cols-3 gap-5"><!--[-->`);
+      ssrRenderList(values, (v) => {
+        _push(`<div class="group card p-8"><div class="w-12 h-12 rounded-xl bg-blue-500/10 group-hover:bg-blue-500 flex items-center justify-center mb-6 transition-all duration-300"><svg class="w-6 h-6 text-blue-500 group-hover:text-white transition-colors duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"${ssrRenderAttr("d", v.icon)}></path></svg></div><h3 class="font-display font-900 text-xl uppercase text-cream-100 mb-3">${ssrInterpolate(v.title)}</h3><p class="font-body text-sm text-mist leading-relaxed">${ssrInterpolate(v.desc)}</p></div>`);
+      });
+      _push(`<!--]--></div></section><div class="hr mb-20"></div><section class="mb-20"><div class="lbl mb-8">Our Capabilities</div><div class="grid grid-cols-1 md:grid-cols-2 gap-5"><!--[-->`);
+      ssrRenderList(capabilities, (cap) => {
+        _push(`<div class="flex items-start gap-5 card p-7"><div class="w-10 h-10 bg-blue-500/10 rounded-xl flex items-center justify-center shrink-0"><svg class="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"${ssrRenderAttr("d", cap.icon)}></path></svg></div><div><h4 class="font-display font-extrabold text-base uppercase text-cream-100 mb-1.5">${ssrInterpolate(cap.title)}</h4><p class="font-body text-sm text-mist leading-relaxed">${ssrInterpolate(cap.desc)}</p></div></div>`);
+      });
+      _push(`<!--]--></div></section><div class="bg-ink-900 border border-white/[0.07] rounded-2xl p-10 lg:p-16 flex flex-col lg:flex-row items-center justify-between gap-8"><div><h3 class="font-display font-900 text-4xl uppercase text-cream-100 mb-2"> Ready to Work Together? </h3><p class="font-body text-mist">Get in touch and let&#39;s bring your print project to life.</p></div>`);
+      _push(ssrRenderComponent(_component_NuxtLink, {
+        to: "/contact",
+        class: "btn-primary shrink-0"
+      }, {
+        default: withCtx((_, _push2, _parent2, _scopeId) => {
+          if (_push2) {
+            _push2(` Contact Us <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"${_scopeId}><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"${_scopeId}></path></svg>`);
+          } else {
+            return [
+              createTextVNode(" Contact Us "),
+              (openBlock(), createBlock("svg", {
+                class: "w-4 h-4",
+                fill: "none",
+                stroke: "currentColor",
+                viewBox: "0 0 24 24"
+              }, [
+                createVNode("path", {
+                  "stroke-linecap": "round",
+                  "stroke-linejoin": "round",
+                  "stroke-width": "2",
+                  d: "M17 8l4 4m0 0l-4 4m4-4H3"
+                })
+              ]))
+            ];
+          }
+        }),
+        _: 1
+      }, _parent));
+      _push(`</div></div></div>`);
+    };
+  }
+});
+const _sfc_setup = _sfc_main.setup;
+_sfc_main.setup = (props, ctx) => {
+  const ssrContext = useSSRContext();
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("pages/about.vue");
+  return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
+};
+export {
+  _sfc_main as default
+};
+//# sourceMappingURL=about-BviYPeId.js.map
