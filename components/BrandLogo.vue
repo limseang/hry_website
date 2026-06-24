@@ -8,14 +8,7 @@
       width="120"
       height="80"
     />
-    <div class="leading-none">
-      <div
-        class="font-mono text-mist uppercase leading-none"
-        :class="subtitleClass"
-      >
-        Printing
-      </div>
-    </div>
+
   </div>
 </template>
 
