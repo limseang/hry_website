@@ -12,9 +12,9 @@
         <div class="space-y-5 font-body text-mist text-lg leading-relaxed">
           <p>HRY Printing was founded in 2009 with a single press, a shared passion for quality,
              and an uncompromising belief that great printing changes how people perceive a brand.</p>
-          <p>Today we operate a 3,000 sqm production facility in Bangkok, equipped with the latest
+          <p>Today we operate a 3,000 sqm production facility in Phnom Penh, equipped with the latest
              offset and digital presses, wide-format plotters, and a complete in-house finishing
-             department — serving thousands of businesses across Thailand.</p>
+             department — serving thousands of businesses across Cambodia.</p>
           <p>From startups ordering their first business cards to national brands requiring millions
              of pieces — every job receives the same obsessive attention to detail.</p>
         </div>
@@ -89,7 +89,10 @@
 </template>
 
 <script setup lang="ts">
-useHead({ title: 'About — HRY Printing' })
+useSeoMeta({
+  title: 'About HRY Printing — Trusted Printing Company in Cambodia',
+  description: 'HRY Printing has been Cambodia\u2019s trusted printing partner since 2009. Based in Phnom Penh, we serve thousands of businesses with premium printing and finishing services.',
+})
 
 const stats = [
   { value: '2009', label: 'Founded'      },

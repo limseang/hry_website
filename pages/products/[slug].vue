@@ -180,7 +180,12 @@ const allImgs = computed(() => {
   return a
 })
 
-useHead(() => ({ title: product.value ? `${product.value.name} — HRY Printing` : 'Product — HRY Printing' }))
+useSeoMeta({
+  title: () => product.value ? `${product.value.name} — Printing in Cambodia | HRY Printing` : 'Product — HRY Printing',
+  description: () => product.value
+    ? `${product.value.name} from HRY Printing in Phnom Penh, Cambodia. ${product.value.short_description || 'High-quality printing with fast delivery across Cambodia.'}`
+    : 'Premium printing products in Cambodia from HRY Printing.',
+})
 
 onMounted(async () => {
   try {

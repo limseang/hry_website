@@ -178,7 +178,10 @@
 </template>
 
 <script setup lang="ts">
-useHead({ title: 'Contact — HRY Printing' })
+useSeoMeta({
+  title: 'Contact HRY Printing — Printing Company in Phnom Penh, Cambodia',
+  description: 'Contact HRY Printing in Phnom Penh, Cambodia for a free quote. Call 010 871 011 or visit us at #339-340, Street 19, Borey Laykong. Premium printing services across Cambodia.',
+})
 
 const form = reactive({
   name: '', email: '', phone: '', company: '', service: '', message: '',

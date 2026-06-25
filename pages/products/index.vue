@@ -141,7 +141,10 @@
 </template>
 
 <script setup lang="ts">
-useHead({ title: 'Products — HRY Printing' })
+useSeoMeta({
+  title: 'Printing Products in Cambodia — T-Shirts, Uniforms, Cards | HRY Printing',
+  description: 'Browse HRY Printing\u2019s catalogue of printing products in Cambodia: t-shirts, polo shirts, school & staff uniforms, business cards, banners, stickers and more. Order online in Phnom Penh.',
+})
 
 const api    = useApi()
 const route  = useRoute()

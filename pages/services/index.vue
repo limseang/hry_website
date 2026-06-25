@@ -61,7 +61,10 @@
 </template>
 
 <script setup lang="ts">
-useHead({ title: 'Services — HRY Printing' })
+useSeoMeta({
+  title: 'Printing Services in Cambodia — Silk Screen, DTF, Sublimation | HRY Printing',
+  description: 'HRY Printing offers professional printing services in Phnom Penh, Cambodia: silk screen printing, DTF printing, sublimation, embroidery, offset, digital and large-format printing.',
+})
 const api = useApi()
 const services = ref<any[]>([])
 const loading  = ref(true)
@@ -73,6 +76,6 @@ const steps = [
   { title:'Consult',  desc:'Share your requirements. We advise on the best approach for your project.',    icon:'M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z' },
   { title:'Design',   desc:'Upload your artwork or let our team create print-ready files.',                 icon:'M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z' },
   { title:'Produce',  desc:'Your job runs on precision presses with quality control at every step.',        icon:'M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z' },
-  { title:'Deliver',  desc:'Pick up in-store or have your prints delivered anywhere in Thailand.',           icon:'M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4' },
+  { title:'Deliver',  desc:'Pick up in-store or have your prints delivered anywhere in Cambodia.',           icon:'M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4' },
 ]
 </script>

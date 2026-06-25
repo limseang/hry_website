@@ -299,7 +299,12 @@
 </template>
 
 <script setup lang="ts">
-useHead({ title: 'HRY Printing – Premium Printing Services Thailand' })
+useSeoMeta({
+  title: 'HRY Printing – Best Printing Services in Cambodia | Phnom Penh',
+  description: 'Looking for the best printing in Cambodia? HRY Printing in Phnom Penh offers premium t-shirt printing, uniforms, business cards, banners, stickers, packaging, silk screen, DTF, sublimation & embroidery. Get a quote today.',
+  ogTitle: 'HRY Printing – Best Printing Services in Cambodia',
+  ogDescription: 'Premium printing in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more.',
+})
 
 const api = useApi()
 
