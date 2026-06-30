@@ -19,7 +19,7 @@
           <!-- Left -->
           <div>
             <p class="lbl mb-7 animate-fade-in" style="opacity:0;animation-fill-mode:both">
-              Premium Printing Services in Cambodia
+              Printing in Phnom Penh, Cambodia
             </p>
             <h1 class="font-display font-900 uppercase leading-none tracking-tight mb-8
                        text-[clamp(3.5rem,9vw,8.5rem)]
@@ -29,11 +29,12 @@
               <span class="accent-text">TO</span><br/>
               Reality
             </h1>
-<!--            <p class="font-body text-mist text-lg leading-relaxed max-w-[440px] mb-10-->
-<!--                      animate-fade-up" style="opacity:0;animation-fill-mode:both;animation-delay:.2s">-->
-<!--              From razor-sharp business cards to building-scale banners —-->
-<!--              HRY delivers printing that commands attention and outlasts the competition.-->
-<!--            </p>-->
+            <p class="font-body text-mist text-lg leading-relaxed max-w-[440px] mb-10
+                      animate-fade-up" style="opacity:0;animation-fill-mode:both;animation-delay:.2s">
+              HRY Printing is the trusted choice for printing in Phnom Penh, Cambodia.
+              From razor-sharp business cards to building-scale banners, t-shirts, uniforms
+              and packaging — we deliver premium printing that commands attention.
+            </p>
             <div class="flex flex-wrap gap-3 animate-fade-up"
                  style="opacity:0;animation-fill-mode:both;animation-delay:.3s">
               <NuxtLink to="/products" class="btn-primary">
@@ -262,6 +263,21 @@
       </div>
     </section>
 
+    <!-- ══ FAQ ═══════════════════════════════════════════════════════ -->
+    <section class="py-24 lg:py-32">
+      <div class="wrap">
+        <div class="lbl mb-4">FAQ</div>
+        <h2 class="font-display font-900 uppercase text-cream-100 leading-none
+                   text-[clamp(2.5rem,6vw,5.5rem)] mb-12">PRINTING IN PHNOM PENH</h2>
+        <div class="grid md:grid-cols-2 gap-5">
+          <div v-for="f in faqs" :key="f.q" class="card p-7">
+            <h3 class="font-display font-extrabold text-lg uppercase text-cream-100 mb-3">{{ f.q }}</h3>
+            <p class="font-body text-sm text-mist leading-relaxed">{{ f.a }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- ══ CTA ═══════════════════════════════════════════════════════ -->
     <section class="relative py-28 lg:py-40 overflow-hidden bg-blue-500">
       <div class="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
@@ -300,10 +316,47 @@
 
 <script setup lang="ts">
 useSeoMeta({
-  title: 'HRY Printing – Best Printing Services in Cambodia | Phnom Penh',
-  description: 'Looking for the best printing in Cambodia? HRY Printing in Phnom Penh offers premium t-shirt printing, uniforms, business cards, banners, stickers, packaging, silk screen, DTF, sublimation & embroidery. Get a quote today.',
-  ogTitle: 'HRY Printing – Best Printing Services in Cambodia',
-  ogDescription: 'Premium printing in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more.',
+  title: 'Printing in Phnom Penh, Cambodia | HRY Printing – Best Printing Service',
+  description: 'HRY Printing is the best printing company for printing in Phnom Penh, Cambodia. T-shirt printing, uniforms, business cards, banners, stickers, packaging, silk screen, DTF, sublimation & embroidery. Get a free quote today.',
+  ogTitle: 'Printing in Phnom Penh, Cambodia – HRY Printing',
+  ogDescription: 'The best printing in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more. Get a free quote from HRY Printing today.',
+})
+
+const faqs = [
+  {
+    q: 'Where can I find printing in Phnom Penh?',
+    a: 'HRY Printing is located at #339-340, Street 19, Borey Laykong, Phnom Penh, Cambodia. We are a full-service printing company offering t-shirts, uniforms, business cards, banners, stickers and packaging right here in Phnom Penh.',
+  },
+  {
+    q: 'What is the best printing company in Phnom Penh, Cambodia?',
+    a: 'HRY Printing has been a trusted printing company in Phnom Penh, Cambodia since 2009, serving thousands of businesses with premium quality, fast turnaround and competitive pricing.',
+  },
+  {
+    q: 'What printing services do you offer in Phnom Penh?',
+    a: 'We offer silk screen printing, DTF printing, sublimation, embroidery, offset and digital printing, large-format banners, business cards, stickers, packaging, school and staff uniforms across Phnom Penh and all of Cambodia.',
+  },
+  {
+    q: 'Do you deliver printing across Cambodia?',
+    a: 'Yes. While our printing shop is based in Phnom Penh, HRY Printing serves customers throughout Cambodia with reliable delivery and fast rush options available.',
+  },
+  {
+    q: 'How do I get a printing quote in Phnom Penh?',
+    a: 'Message us on Telegram @Hryprintingshop, call 010 871 011, or use our contact form. Our team responds within 2 hours on business days with a free quote.',
+  },
+]
+
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+}
+
+useHead({
+  script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(faqJsonLd) }],
 })
 
 const api = useApi()

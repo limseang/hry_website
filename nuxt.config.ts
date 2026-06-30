@@ -1,3 +1,5 @@
+const SITE_URL = process.env.NUXT_PUBLIC_SITE_URL || 'https://hryprinting.com'
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
@@ -12,7 +14,7 @@ export default defineNuxtConfig({
   // Public canonical URL of the live site. Change this to your real domain.
   // You can also override it without editing code via the NUXT_PUBLIC_SITE_URL env var.
   site: {
-    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://hryprinting.com',
+    url: SITE_URL,
     name: 'HRY Printing',
   },
 
@@ -44,12 +46,15 @@ export default defineNuxtConfig({
   // Auto-generated sitemap.xml
   sitemap: {
     autoLastmod: true,
+    // Keep private/app routes out of the sitemap so search engines focus on
+    // the public marketing pages we want to rank.
+    exclude: ['/auth/**', '/orders/**'],
   },
 
   runtimeConfig: {
     public: {
       apiBase: process.env.NUXT_PUBLIC_API_BASE || 'http://localhost:8080/api/v1',
-      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://hryprinting.com',
+      siteUrl: SITE_URL,
     },
   },
 
@@ -84,13 +89,13 @@ export default defineNuxtConfig({
         { property: 'og:description', content: 'Premium printing services in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more. Get a quote from HRY today.' },
         { property: 'og:type',        content: 'website' },
         { property: 'og:locale',      content: 'en_US' },
-        { property: 'og:image',       content: '/favicon.png' },
+        { property: 'og:image',       content: `${SITE_URL}/favicon.png` },
 
         // Twitter / X card
         { name: 'twitter:card',        content: 'summary_large_image' },
         { name: 'twitter:title',       content: 'HRY Printing – Best Printing Services in Cambodia' },
         { name: 'twitter:description', content: 'Premium printing services in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more.' },
-        { name: 'twitter:image',       content: '/favicon.png' },
+        { name: 'twitter:image',       content: `${SITE_URL}/favicon.png` },
 
         { name: 'theme-color', content: '#0a0a0a' },
       ],

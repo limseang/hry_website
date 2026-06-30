@@ -75,6 +75,7 @@
 
 <script setup lang="ts">
 useHead({ title: 'Register — HRY Printing' })
+useSeoMeta({ robots: 'noindex, follow' })
 
 const api    = useApi()
 const auth   = useAuthStore()

@@ -66,6 +66,7 @@
 <script setup lang="ts">
 definePageMeta({ layout: 'default' })
 useHead({ title: 'Sign In — HRY Printing' })
+useSeoMeta({ robots: 'noindex, follow' })
 
 const api    = useApi()
 const auth   = useAuthStore()
