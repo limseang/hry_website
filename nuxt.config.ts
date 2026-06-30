@@ -98,6 +98,14 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/png', href: '/favicon.png' },
         { rel: 'apple-touch-icon', href: '/favicon.png' },
       ],
+      script: [
+        // Google tag (gtag.js)
+        { src: 'https://www.googletagmanager.com/gtag/js?id=G-JXTYJJYVGY', async: true },
+        {
+          innerHTML:
+            "window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', 'G-JXTYJJYVGY');",
+        },
+      ],
     },
     pageTransition: { name: 'page', mode: 'out-in' },
   },
