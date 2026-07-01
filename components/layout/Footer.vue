@@ -88,13 +88,13 @@
 
 <script setup lang="ts">
 const socials = [
-  { name:'Facebook', abbr:'Fb', href:'https://www.facebook.com/vannyprintingshop' },
+  { name:'Facebook', abbr:'Fb', href:'https://web.facebook.com/Hryprintingshop' },
 ]
 
 // ===== Facebook Page Plugin =====
 const fbPluginSrc =
     'https://www.facebook.com/plugins/page.php' +
-    '?href=' + encodeURIComponent('https://www.facebook.com/vannyprintingshop') +
+    '?href=' + encodeURIComponent('https://web.facebook.com/Hryprintingshop') +
     '&tabs=timeline&width=340&height=400&small_header=true' +
     '&adapt_container_width=true&hide_cover=false&show_facepile=true'
 
