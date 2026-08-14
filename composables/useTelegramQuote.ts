@@ -3,7 +3,7 @@
  * Opens a chat with HRY Printing and pre-fills a message that carries the
  * product name, the chosen options and the absolute product URL.
  */
-export const TELEGRAM_USER = 'iampopcorn'
+export const TELEGRAM_USER = 'Hryprintingshop'
 
 interface QuoteOptions {
   size?: string
