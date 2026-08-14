@@ -184,7 +184,8 @@
         </div>
       </div>
 
-      <!-- 404 -->
+
+
       <div v-else class="text-center py-32">
         <div class="font-display font-900 text-[9rem] text-ink-800 leading-none select-none mb-6">404</div>
         <p class="font-body text-mist mb-8">This product could not be found.</p>
