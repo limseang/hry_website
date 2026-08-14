@@ -7,7 +7,7 @@
           ALL PRODUCTS
         </h1>
         <p class="font-body text-mist max-w-sm leading-relaxed lg:pb-2">
-          Browse our full range of professional printing products. Filter by category or search below.
+          Browse our full range of professional printing products. Filter or search below, then message us on Telegram for a quote on any item.
         </p>
       </div>
 
@@ -16,17 +16,17 @@
       <!-- Category filters -->
       <div class="flex flex-wrap gap-2 mb-7">
         <button
-          class="font-display font-700 text-sm uppercase tracking-wide px-4 py-2
+            class="font-display font-700 text-sm uppercase tracking-wide px-4 py-2
                  border-2 transition-all duration-200"
-          :class="cat==='' ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-blue-500 hover:text-blue-400'"
-          @click="setCat('')"
+            :class="cat==='' ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-blue-500 hover:text-blue-400'"
+            @click="setCat('')"
         >All</button>
         <button
-          v-for="c in categories" :key="c.id"
-          class="font-display font-700 text-sm uppercase tracking-wide px-4 py-2
+            v-for="c in categories" :key="c.id"
+            class="font-display font-700 text-sm uppercase tracking-wide px-4 py-2
                  border-2 transition-all duration-200"
-          :class="cat===c.slug ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-blue-500 hover:text-blue-400'"
-          @click="setCat(c.slug)"
+            :class="cat===c.slug ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-blue-500 hover:text-blue-400'"
+            @click="setCat(c.slug)"
         >{{ c.name }}</button>
       </div>
 
@@ -36,15 +36,15 @@
           <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-mist"
                fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
           </svg>
           <input v-model="q" type="text" placeholder="Search products…"
-            class="inp !pl-11" @input="onSearch"/>
+                 class="inp !pl-11" @input="onSearch"/>
         </div>
         <div class="flex gap-1.5">
           <button v-for="v in ['grid','list']" :key="v" @click="view=v as any"
-            class="w-9 h-9 border-2 flex items-center justify-center transition-all duration-200"
-            :class="view===v ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-white/30'">
+                  class="w-9 h-9 border-2 flex items-center justify-center transition-all duration-200"
+                  :class="view===v ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-white/30'">
             <svg v-if="v==='grid'" class="w-4 h-4" fill="currentColor" viewBox="0 0 16 16">
               <rect x="1" y="1" width="6" height="6"/><rect x="9" y="1" width="6" height="6"/>
               <rect x="1" y="9" width="6" height="6"/><rect x="9" y="9" width="6" height="6"/>
@@ -63,38 +63,54 @@
 
       <!-- Grid view -->
       <div v-if="!loading && products.length && view==='grid'"
-        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-        <UiProductCard v-for="p in products" :key="p.id" :p="p"/>
+           class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+        <UiProductCard v-for="p in products" :key="p.id ?? p.slug" :p="p"/>
       </div>
 
       <!-- List view -->
       <div v-else-if="!loading && products.length && view==='list'" class="flex flex-col gap-3">
-        <NuxtLink v-for="p in products" :key="p.id" :to="`/products/${p.slug}`"
-          class="group card flex items-center gap-5 p-4">
+        <div v-for="p in products" :key="p.id ?? p.slug"
+             class="group card relative flex items-center gap-5 p-4">
+          <!-- whole row links to the product page -->
+          <NuxtLink v-if="p.slug" :to="`/products/${p.slug}`" class="absolute inset-0 z-0" :aria-label="p.name"/>
+
           <div class="zoom w-20 h-20 bg-ink-700 shrink-0">
-            <img v-if="p.thumbnail_url" :src="p.thumbnail_url" :alt="p.name" loading="lazy"/>
+            <img v-if="p.thumbnail_url" :src="p.thumbnail_url" :alt="p.name" loading="lazy"
+                 class="w-full h-full object-cover"/>
             <div v-else class="w-full h-full flex items-center justify-center">
               <svg class="w-6 h-6 text-ink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16"/>
               </svg>
             </div>
           </div>
+
           <div class="flex-1 min-w-0">
             <div class="font-mono text-[10px] text-blue-400 uppercase tracking-widest mb-1">{{ p.category?.name }}</div>
             <h3 class="font-display font-extrabold text-lg text-cream-100 uppercase truncate
                        group-hover:text-blue-400 transition-colors">{{ p.name }}</h3>
             <p class="font-body text-sm text-mist truncate mt-0.5">{{ p.short_description }}</p>
           </div>
-          <div class="text-right shrink-0">
-            <div v-if="p.price" class="font-display font-900 text-xl text-cream-100">${{ Number(p.price).toLocaleString() }}</div>
-            <div v-else class="font-body text-sm text-mist">On request</div>
-            <div v-if="p.unit" class="font-mono text-xs text-mist">/ {{ p.unit }}</div>
+
+          <!-- Telegram quote, sits above the row link -->
+          <div class="text-right shrink-0 relative z-10">
+            <a :href="quoteLink(p)" target="_blank" rel="noopener" @click.stop
+               :aria-label="`Ask price for ${p.name} on Telegram`"
+               class="inline-flex items-center gap-2 font-display font-700 text-sm uppercase tracking-wide
+                      px-4 py-2 border-2 border-white/15 text-mist
+                      hover:bg-blue-500 hover:border-blue-500 hover:text-white transition-all duration-200">
+              <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21.94 4.38 18.6 20.1c-.25 1.11-.91 1.38-1.84.86l-5.09-3.75-2.45 2.36c-.27.27-.5.5-1.03.5l.37-5.2 9.47-8.56c.41-.37-.09-.57-.64-.2L5.68 13.3.65 11.72c-1.09-.34-1.11-1.09.23-1.62L20.53 2.5c.91-.33 1.71.21 1.41 1.88Z"/>
+              </svg>
+              Ask price
+            </a>
+            <div class="font-mono text-[11px] text-mist mt-1.5">Reply with a quote on Telegram</div>
           </div>
+
           <svg class="w-4 h-4 text-mist group-hover:text-blue-500 group-hover:translate-x-1 transition-all shrink-0"
                fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
           </svg>
-        </NuxtLink>
+        </div>
       </div>
 
       <!-- Skeleton -->
@@ -117,19 +133,19 @@
       <!-- Pagination -->
       <div v-if="totalPages > 1" class="flex items-center justify-center gap-2 mt-14">
         <button :disabled="page===1" @click="go(page-1)"
-          class="w-10 h-10 border-2 border-white/15 flex items-center justify-center text-mist
+                class="w-10 h-10 border-2 border-white/15 flex items-center justify-center text-mist
                  hover:border-white/30 disabled:opacity-30 transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
           </svg>
         </button>
         <button v-for="n in pageNums" :key="n" @click="go(n)"
-          class="w-10 h-10 border-2 font-mono text-sm transition-all duration-200"
-          :class="n===page ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-white/30'">
+                class="w-10 h-10 border-2 font-mono text-sm transition-all duration-200"
+                :class="n===page ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-white/30'">
           {{ n }}
         </button>
         <button :disabled="page===totalPages" @click="go(page+1)"
-          class="w-10 h-10 border-2 border-white/15 flex items-center justify-center text-mist
+                class="w-10 h-10 border-2 border-white/15 flex items-center justify-center text-mist
                  hover:border-white/30 disabled:opacity-30 transition-colors">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
@@ -143,12 +159,14 @@
 <script setup lang="ts">
 useSeoMeta({
   title: 'Printing Products in Cambodia — T-Shirts, Uniforms, Cards | HRY Printing',
-  description: 'Browse HRY Printing\u2019s catalogue of printing products in Cambodia: t-shirts, polo shirts, school & staff uniforms, business cards, banners, stickers and more. Order online in Phnom Penh.',
+  description: 'Browse HRY Printing\u2019s catalogue of printing products in Cambodia: t-shirts, polo shirts, school & staff uniforms, business cards, banners, stickers and more. Contact us for a quote in Phnom Penh.',
 })
 
 const api    = useApi()
 const route  = useRoute()
 const router = useRouter()
+
+const { quoteLink } = useTelegramQuote()
 
 const products   = ref<any[]>([])
 const categories = ref<any[]>([])
@@ -172,7 +190,8 @@ const load = async () => {
     if (cat.value) p.category = cat.value
     if (q.value)   p.search   = q.value
     const r = await api.getProducts(p)
-    products.value   = r?.data?.data  ?? []
+    // drop null/empty rows so the card never renders without a product
+    products.value   = (r?.data?.data ?? []).filter((x: any) => x && x.slug)
     total.value      = r?.data?.total ?? 0
     totalPages.value = r?.data?.last_page ?? 1
   } catch { products.value = [] }

@@ -60,8 +60,8 @@
           <div class="hidden lg:block animate-fade-up"
                style="opacity:0;animation-fill-mode:both;animation-delay:.25s">
 
-            <!-- Active hero banner from API -->
-            <div v-if="heroBanner" class="relative aspect-[4/5] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.7)]">
+            <!-- Hero banner — API or demo poster fallback -->
+            <div class="relative aspect-[4/5] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.7)]">
               <img :src="heroBanner.image_url" :alt="heroBanner.title"
                    class="w-full h-full object-cover"/>
               <div class="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/10 to-transparent"/>
@@ -82,25 +82,12 @@
                 </NuxtLink>
               </div>
               <!-- Second banner thumbnail -->
-              <div v-if="banners[1]" class="absolute -top-5 -right-5 w-28 h-28 overflow-hidden
+              <div v-if="secondaryBanner" class="absolute -top-5 -right-5 w-28 h-28 overflow-hidden
                                              border-2 border-blue-500/30 shadow-xl animate-float">
-                <img :src="banners[1].image_url" :alt="banners[1].title" class="w-full h-full object-cover"/>
+                <img :src="secondaryBanner.image_url" :alt="secondaryBanner.title" class="w-full h-full object-cover"/>
               </div>
-            </div>
-
-            <!-- Placeholder if no banners yet -->
-            <div v-else class="relative aspect-[4/5] bg-ink-800 border border-white/[0.07]
-                               flex flex-col items-center justify-center
-                               shadow-[0_40px_100px_rgba(0,0,0,0.6)]">
-              <div class="font-display font-900 text-[7rem] text-blue-500/10 leading-none select-none">HRY</div>
-              <div class="absolute bottom-8 left-8 right-8">
-                <div class="bg-ink-700/80 backdrop-blur border border-white/[0.07] p-5">
-                  <div class="font-mono text-[10px] text-blue-400 tracking-widest uppercase mb-2">Ready to Print?</div>
-                  <div class="font-display font-900 text-2xl text-cream-100 uppercase">Premium Quality,<br/>Fast Delivery</div>
-                </div>
-              </div>
-              <!-- Decorative floating badge -->
-              <div class="absolute -top-5 -left-5 bg-blue-500 p-5 animate-float">
+              <!-- Demo badge when using fallback poster -->
+              <div v-else-if="!banners.length" class="absolute -top-5 -left-5 bg-blue-500 p-5 animate-float">
                 <div class="font-display font-900 text-4xl text-white leading-none">15+</div>
                 <div class="font-mono text-[10px] text-white/70 uppercase tracking-widest">Years</div>
               </div>
@@ -368,7 +355,16 @@ const banners        = ref<any[]>([])
 const loadingProducts = ref(true)
 const loadingServices = ref(true)
 
-const heroBanner = computed(() => banners.value[0] ?? null)
+const demoBanner = {
+  image_url:   '/demo/demo-poster.png',
+  title:       'Premium Printing',
+  subtitle:    'Phnom Penh, Cambodia',
+  button_text: 'Browse Products',
+  button_url:  '/products',
+}
+
+const heroBanner      = computed(() => banners.value[0] ?? demoBanner)
+const secondaryBanner = computed(() => banners.value[1] ?? null)
 
 onMounted(async () => {
   await Promise.allSettled([

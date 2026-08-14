@@ -38,8 +38,8 @@
       <div class="flex items-end justify-between pt-3 border-t border-white/[0.06] mt-auto">
         <div>
           <template v-if="p.price">
-            <span class="font-display font-900 text-2xl text-cream-100">${{ Number(p.price).toLocaleString() }}</span>
-            <span v-if="p.unit" class="font-mono text-xs text-mist ml-1.5">/ {{ p.unit }}</span>
+            <span class="font-display font-900 text-2xl text-cream-100">Click For More Detail</span>
+
           </template>
           <template v-else-if="p.price_min">
             <span class="font-mono text-xs text-mist block mb-0.5">From</span>

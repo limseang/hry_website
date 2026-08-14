@@ -20,7 +20,7 @@
           <NuxtLink to="/products" class="hover:text-cream-100 transition-colors">Products</NuxtLink>
           <span v-if="product.category" class="opacity-30">/</span>
           <NuxtLink v-if="product.category" :to="`/products?category=${product.category.slug}`"
-            class="hover:text-cream-100 transition-colors">{{ product.category.name }}</NuxtLink>
+                    class="hover:text-cream-100 transition-colors">{{ product.category.name }}</NuxtLink>
           <span class="opacity-30">/</span>
           <span class="text-cream-200 truncate max-w-[200px]">{{ product.name }}</span>
         </nav>
@@ -28,14 +28,14 @@
         <div class="grid lg:grid-cols-2 gap-12 xl:gap-20">
 
           <!-- Images -->
-          <div class="space-y-3">
+          <div class="space-y-3 lg:sticky lg:top-24 lg:self-start">
             <div class="zoom aspect-square bg-ink-800 border border-white/[0.07]">
               <img :src="activeImg" :alt="product.name" class="w-full h-full object-cover"/>
             </div>
             <div v-if="allImgs.length>1" class="flex gap-2.5 overflow-x-auto pb-1">
               <button v-for="(img,i) in allImgs" :key="i" @click="activeImg=img"
-                class="w-20 h-20 shrink-0 border-2 overflow-hidden transition-all duration-200"
-                :class="activeImg===img ? 'border-blue-500' : 'border-white/10 hover:border-white/30'">
+                      class="w-20 h-20 shrink-0 border-2 overflow-hidden transition-all duration-200"
+                      :class="activeImg===img ? 'border-blue-500' : 'border-white/10 hover:border-white/30'">
                 <img :src="img" :alt="`img-${i}`" class="w-full h-full object-cover"/>
               </button>
             </div>
@@ -46,11 +46,11 @@
             <!-- Badges -->
             <div class="flex items-center gap-2.5 mb-5 flex-wrap">
               <NuxtLink v-if="product.category" :to="`/products?category=${product.category.slug}`"
-                class="lbl !text-[10px] hover:opacity-70 transition-opacity">
+                        class="lbl !text-[10px] hover:opacity-70 transition-opacity">
                 {{ product.category.name }}
               </NuxtLink>
               <span v-if="product.is_featured"
-                class="bg-blue-500 font-mono text-white text-[10px] uppercase tracking-widest px-2.5 py-0.5">
+                    class="bg-blue-500 font-mono text-white text-[10px] uppercase tracking-widest px-2.5 py-0.5">
                 ★ Featured
               </span>
             </div>
@@ -58,26 +58,13 @@
             <h1 class="font-display font-900 uppercase text-cream-100 leading-none tracking-tight
                        text-[clamp(2.5rem,5vw,4.5rem)] mb-6">{{ product.name }}</h1>
 
-            <!-- Price -->
+            <!-- Pricing → Telegram -->
             <div class="mb-8 pb-8 border-b border-white/[0.07]">
-              <template v-if="product.price">
-                <span class="font-display font-900 text-5xl text-cream-100">
-                  ${{ Number(product.price).toLocaleString() }}
-                </span>
-                <span v-if="product.unit" class="font-body text-mist ml-2">/ {{ product.unit }}</span>
-              </template>
-              <template v-else-if="product.price_min">
-                <div class="font-mono text-[10px] text-mist uppercase tracking-widest mb-1">Price Range</div>
-                <span class="font-display font-900 text-5xl text-cream-100">
-                  ${{ Number(product.price_min).toLocaleString() }}
-                </span>
-                <span class="font-display font-900 text-3xl text-mist mx-2">–</span>
-                <span class="font-display font-900 text-5xl text-cream-100">
-                  ${{ Number(product.price_max).toLocaleString() }}
-                </span>
-              </template>
-              <span v-else class="font-body text-xl text-mist">Price on request</span>
-              <div v-if="product.min_quantity>1" class="font-mono text-xs text-mist mt-2">
+              <div class="font-mono text-[10px] text-mist uppercase tracking-widest mb-2">Pricing</div>
+              <p class="font-body text-lg text-cream-200 leading-relaxed">
+                Price depends on size, material and quantity. Send us this product on Telegram and we reply with a quote.
+              </p>
+              <div v-if="product.min_quantity>1" class="font-mono text-xs text-mist mt-3">
                 Min. order: {{ product.min_quantity }} {{ product.unit || 'units' }}
               </div>
             </div>
@@ -92,22 +79,40 @@
               <div class="font-mono text-[11px] text-blue-500 uppercase tracking-widest mb-3">Sizes</div>
               <div class="flex flex-wrap gap-2">
                 <button v-for="sz in product.size_options" :key="sz" @click="selSize=sz"
-                  class="font-body text-sm px-3.5 py-1.5 border-2 transition-all duration-200"
-                  :class="selSize===sz ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-blue-500 hover:text-blue-400'">
+                        class="font-body text-sm px-3.5 py-1.5 border-2 transition-all duration-200"
+                        :class="selSize===sz ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-blue-500 hover:text-blue-400'">
                   {{ sz }}
                 </button>
               </div>
             </div>
 
             <!-- Finishing options -->
-            <div v-if="product.finishing_options?.length" class="mb-8">
+            <div v-if="product.finishing_options?.length" class="mb-6">
               <div class="font-mono text-[11px] text-blue-500 uppercase tracking-widest mb-3">Finishing</div>
               <div class="flex flex-wrap gap-2">
                 <button v-for="fin in product.finishing_options" :key="fin" @click="selFin=fin"
-                  class="font-body text-sm px-3.5 py-1.5 border-2 transition-all duration-200"
-                  :class="selFin===fin ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-blue-500 hover:text-blue-400'">
+                        class="font-body text-sm px-3.5 py-1.5 border-2 transition-all duration-200"
+                        :class="selFin===fin ? 'bg-blue-500 border-blue-500 text-white' : 'border-white/15 text-mist hover:border-blue-500 hover:text-blue-400'">
                   {{ fin }}
                 </button>
+              </div>
+            </div>
+
+            <!-- Quantity -->
+            <div class="mb-8">
+              <div class="font-mono text-[11px] text-blue-500 uppercase tracking-widest mb-3">Quantity</div>
+              <div class="inline-flex items-center border-2 border-white/15">
+                <button @click="stepQty(-1)"
+                        class="w-10 h-10 font-body text-lg text-mist hover:text-blue-400 transition-colors">−</button>
+                <input v-model.number="qty" type="number" :min="minQty" inputmode="numeric"
+                       class="w-24 h-10 bg-transparent text-center font-body text-sm text-cream-100
+                         outline-none border-x-2 border-white/15 [appearance:textfield]
+                         [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"/>
+                <button @click="stepQty(1)"
+                        class="w-10 h-10 font-body text-lg text-mist hover:text-blue-400 transition-colors">+</button>
+                <span class="font-mono text-[10px] text-mist uppercase tracking-widest px-4">
+                  {{ product.unit || 'pcs' }}
+                </span>
               </div>
             </div>
 
@@ -134,22 +139,47 @@
               </div>
             </div>
 
+            <!-- Message preview -->
+            <div class="bg-ink-800 border border-white/[0.07] mb-4">
+              <div class="flex items-center justify-between px-5 py-3 border-b border-white/[0.07]">
+                <span class="font-mono text-[10px] text-mist uppercase tracking-widest">Your Telegram message</span>
+                <button @click="copyMsg"
+                        class="font-mono text-[10px] uppercase tracking-widest transition-colors"
+                        :class="copied ? 'text-blue-400' : 'text-mist hover:text-cream-100'">
+                  {{ copied ? 'Copied' : 'Copy' }}
+                </button>
+              </div>
+              <textarea v-model="messageBody" rows="8"
+                        class="w-full bg-transparent font-mono text-[11px] leading-relaxed text-cream-200
+                               p-5 outline-none resize-y min-h-[140px] border-0"/>
+              <div class="px-5 py-4 border-t border-white/[0.07]">
+                <div class="font-mono text-[10px] text-mist uppercase tracking-widest mb-2">
+                  Product link — included automatically
+                </div>
+                <div class="font-mono text-[11px] text-blue-400 break-all select-all">{{ productPageUrl }}</div>
+              </div>
+            </div>
+
             <!-- CTA -->
             <div class="flex flex-col sm:flex-row gap-3">
-              <NuxtLink to="/contact" class="btn-primary flex-1">
-                Request a Quote
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              <a :href="telegramUrl" target="_blank" rel="noopener" class="btn-primary flex-1">
+                Ask price on Telegram
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21.94 4.38 18.6 20.1c-.25 1.11-.91 1.38-1.84.86l-5.09-3.75-2.45 2.36c-.27.27-.5.5-1.03.5l.37-5.2 9.47-8.56c.41-.37-.09-.57-.64-.2L5.68 13.3.65 11.72c-1.09-.34-1.11-1.09.23-1.62L20.53 2.5c.91-.33 1.71.21 1.41 1.88Z"/>
                 </svg>
-              </NuxtLink>
+              </a>
               <a href="tel:02XXXXXXX" class="btn-outline px-6">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                    d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                        d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
                 </svg>
                 Call Us
               </a>
             </div>
+            <p class="font-mono text-[10px] text-mist mt-3">
+              Telegram opens with this product link already in the box. No Telegram?
+              <NuxtLink to="/contact" class="text-blue-400 hover:text-blue-300 transition-colors">Use the contact form</NuxtLink>
+            </p>
           </div>
         </div>
       </div>
@@ -167,11 +197,15 @@
 <script setup lang="ts">
 const route   = useRoute()
 const api     = useApi()
+const { quoteBody, quoteLink, productUrl } = useTelegramQuote()
 const product = ref<any>(null)
 const loading = ref(true)
 const activeImg = ref('')
 const selSize   = ref('')
 const selFin    = ref('')
+const qty       = ref(1)
+const copied    = ref(false)
+const messageBody = ref('')
 
 const allImgs = computed(() => {
   const a: string[] = []
@@ -180,11 +214,54 @@ const allImgs = computed(() => {
   return a
 })
 
+const minQty = computed(() => Number(product.value?.min_quantity) || 1)
+
+function stepQty (d: number) {
+  const step = minQty.value > 1 ? minQty.value : 1
+  qty.value = Math.max(minQty.value, (Number(qty.value) || minQty.value) + d * step)
+}
+
+const productPageUrl = computed(() => product.value ? productUrl(product.value.slug) : '')
+
+const quoteOpts = computed(() => ({
+  size: selSize.value || undefined,
+  finishing: selFin.value || undefined,
+  qty: qty.value,
+}))
+
+const tgMessage = computed(() =>
+  product.value ? `${messageBody.value}\n\n${productPageUrl.value}` : ''
+)
+
+const telegramUrl = computed(() =>
+  product.value ? quoteLink(product.value, quoteOpts.value, messageBody.value) : ''
+)
+
+watch([product, selSize, selFin, qty], () => {
+  if (!product.value) return
+  messageBody.value = quoteBody(product.value, quoteOpts.value)
+}, { immediate: true })
+
+async function copyMsg () {
+  try {
+    await navigator.clipboard.writeText(tgMessage.value)
+    copied.value = true
+    setTimeout(() => (copied.value = false), 2000)
+  } catch { /* clipboard blocked, user can still select the text */ }
+}
+
+/* OG tags so the pasted link renders as a card with the product photo inside Telegram */
 useSeoMeta({
   title: () => product.value ? `${product.value.name} — Printing in Cambodia | HRY Printing` : 'Product — HRY Printing',
   description: () => product.value
-    ? `${product.value.name} from HRY Printing in Phnom Penh, Cambodia. ${product.value.short_description || 'High-quality printing with fast delivery across Cambodia.'}`
-    : 'Premium printing products in Cambodia from HRY Printing.',
+      ? `${product.value.name} from HRY Printing in Phnom Penh, Cambodia. ${product.value.short_description || 'High-quality printing with fast delivery across Cambodia.'}`
+      : 'Premium printing products in Cambodia from HRY Printing.',
+  ogType: 'product',
+  ogUrl: () => productPageUrl.value,
+  ogTitle: () => product.value ? `${product.value.name} | HRY Printing` : 'HRY Printing',
+  ogDescription: () => product.value?.short_description || product.value?.description || 'Printing in Phnom Penh, Cambodia.',
+  ogImage: () => product.value?.thumbnail_url || '',
+  twitterCard: 'summary_large_image',
 })
 
 onMounted(async () => {
@@ -195,6 +272,7 @@ onMounted(async () => {
       activeImg.value = product.value.thumbnail_url || ''
       selSize.value   = product.value.size_options?.[0]    || ''
       selFin.value    = product.value.finishing_options?.[0] || ''
+      qty.value       = minQty.value
     }
   } catch { product.value = null }
   finally   { loading.value = false }
