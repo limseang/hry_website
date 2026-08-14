@@ -61,7 +61,6 @@
         {{ loading ? 'Loading…' : `${total} product${total===1?'':'s'} found` }}
       </p>
 
-      <!-- Grid view -->
       <div v-if="!loading && products.length && view==='grid'"
            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
         <UiProductCard v-for="p in products" :key="p.id ?? p.slug" :p="p"/>
