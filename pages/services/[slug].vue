@@ -41,11 +41,11 @@
 
             <!-- Quick info card -->
             <div class="bg-ink-800/80 backdrop-blur border border-white/[0.08] rounded-2xl p-8">
-              <div v-if="service.price_starting_from" class="pb-5 mb-5 border-b border-white/[0.07]">
-                <div class="font-mono text-[10px] text-mist uppercase tracking-widest mb-1">Starting From</div>
-                <div class="font-display font-900 text-5xl text-cream-100">
-                  ${{ Number(service.price_starting_from).toLocaleString() }}
-                </div>
+              <div class="pb-5 mb-5 border-b border-white/[0.07]">
+                <div class="font-mono text-[10px] text-mist uppercase tracking-widest mb-2">Pricing</div>
+                <p class="font-body text-cream-200 leading-relaxed">
+                  Quoted per job, based on quantity, material and finishing. Message us on Telegram and we reply with a price.
+                </p>
               </div>
               <div class="grid grid-cols-2 gap-5 mb-6">
                 <div v-if="service.turnaround_time">
@@ -60,12 +60,16 @@
                   </div>
                 </div>
               </div>
-              <NuxtLink to="/contact" class="btn-primary w-full justify-center">
-                Get a Quote
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+              <a :href="serviceLink(service)" target="_blank" rel="noopener"
+                 class="btn-primary w-full justify-center">
+                Ask price on Telegram
+                <svg class="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M21.94 4.38 18.6 20.1c-.25 1.11-.91 1.38-1.84.86l-5.09-3.75-2.45 2.36c-.27.27-.5.5-1.03.5l.37-5.2 9.47-8.56c.41-.37-.09-.57-.64-.2L5.68 13.3.65 11.72c-1.09-.34-1.11-1.09.23-1.62L20.53 2.5c.91-.33 1.71.21 1.41 1.88Z"/>
                 </svg>
-              </NuxtLink>
+              </a>
+              <p class="font-mono text-[10px] text-mist text-center mt-3">
+                This service link comes with the message
+              </p>
             </div>
           </div>
         </div>
@@ -138,7 +142,14 @@
                 Our team is ready to advise on the best options for your project.
               </p>
               <div class="space-y-3">
-                <a href="tel:02XXXXXXX"
+                <a :href="serviceLink(service)" target="_blank" rel="noopener"
+                  class="flex items-center gap-3 font-body text-sm text-cream-200 hover:text-blue-400 transition-colors">
+                  <svg class="w-4 h-4 text-blue-500 shrink-0" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M21.94 4.38 18.6 20.1c-.25 1.11-.91 1.38-1.84.86l-5.09-3.75-2.45 2.36c-.27.27-.5.5-1.03.5l.37-5.2 9.47-8.56c.41-.37-.09-.57-.64-.2L5.68 13.3.65 11.72c-1.09-.34-1.11-1.09.23-1.62L20.53 2.5c.91-.33 1.71.21 1.41 1.88Z"/>
+                  </svg>
+                  Telegram @{{ TELEGRAM_USER }}
+                </a>
+                <a href="tel:010871011"
                   class="flex items-center gap-3 font-body text-sm text-cream-200 hover:text-blue-400 transition-colors">
                   <svg class="w-4 h-4 text-blue-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
@@ -205,12 +216,20 @@ const service = ref<any>(null)
 const all     = ref<any[]>([])
 const loading = ref(true)
 
+const { serviceLink, serviceUrl, TELEGRAM_USER } = useTelegramQuote()
+
 const related = computed(() => all.value.filter(s => s.slug !== route.params.slug).slice(0, 3))
 
-useHead(() => ({
-  title: service.value ? `${service.value.name} — HRY Printing` : 'Service — HRY Printing',
-  meta:  [{ name: 'description', content: service.value?.short_description }],
-}))
+useSeoMeta({
+  title: () => service.value ? `${service.value.name} — HRY Printing` : 'Service — HRY Printing',
+  description: () => service.value?.short_description || 'Printing services in Phnom Penh, Cambodia.',
+  ogType: 'website',
+  ogUrl: () => serviceUrl(route.params.slug as string),
+  ogTitle: () => service.value ? `${service.value.name} | HRY Printing` : 'HRY Printing',
+  ogDescription: () => service.value?.short_description || 'Printing in Phnom Penh, Cambodia.',
+  ogImage: () => service.value?.images_url?.[0] || '',
+  twitterCard: 'summary_large_image',
+})
 
 const icons: Record<string, string> = {
   printer:    'M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z',
@@ -231,7 +250,7 @@ onMounted(async () => {
       api.getServices(),
     ])
     service.value = s?.data ?? null
-    all.value     = a?.data ?? []
+    all.value     = (a?.data ?? []).filter((x: any) => x && x.slug)
   } catch { service.value = null }
   finally   { loading.value = false }
 })
