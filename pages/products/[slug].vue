@@ -116,7 +116,7 @@
               </div>
             </div>
 
-            <!-- Specs -->
+            <!-- Specssss -->
             <div class="bg-ink-800 border border-white/[0.07] p-6 mb-8">
               <div class="font-mono text-[11px] text-blue-500 uppercase tracking-widest mb-5">Specifications</div>
               <div class="grid grid-cols-2 gap-x-8 gap-y-4">
@@ -183,7 +183,6 @@
           </div>
         </div>
       </div>
-
 
 
       <div v-else class="text-center py-32">
