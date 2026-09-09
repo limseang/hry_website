@@ -117,28 +117,7 @@
               </div>
             </div>
 
-            <!-- Specssss -->
-            <div class="bg-ink-800 border border-white/[0.07] p-6 mb-8">
-              <div class="font-mono text-[11px] text-blue-500 uppercase tracking-widest mb-5">Specifications</div>
-              <div class="grid grid-cols-2 gap-x-8 gap-y-4">
-                <div v-if="product.material">
-                  <div class="font-mono text-[10px] text-mist uppercase tracking-widest mb-1">Material</div>
-                  <div class="font-body text-sm text-cream-200">{{ product.material }}</div>
-                </div>
-                <div v-if="product.turnaround_time">
-                  <div class="font-mono text-[10px] text-mist uppercase tracking-widest mb-1">Turnaround</div>
-                  <div class="font-body text-sm text-cream-200">{{ product.turnaround_time }}</div>
-                </div>
-                <div v-if="product.min_quantity">
-                  <div class="font-mono text-[10px] text-mist uppercase tracking-widest mb-1">Min Qty</div>
-                  <div class="font-body text-sm text-cream-200">{{ product.min_quantity }} {{ product.unit||'pcs' }}</div>
-                </div>
-                <div v-if="product.color_options?.length">
-                  <div class="font-mono text-[10px] text-mist uppercase tracking-widest mb-1">Colors</div>
-                  <div class="font-body text-sm text-cream-200">{{ product.color_options.join(', ') }}</div>
-                </div>
-              </div>
-            </div>
+            
 
             <!-- Message preview -->
             <div class="bg-ink-800 border border-white/[0.07] mb-4">
