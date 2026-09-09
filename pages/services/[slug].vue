@@ -89,9 +89,12 @@
                 <path d="M12 0v8M12 16v8M0 12h8M16 12h8" stroke="currentColor" stroke-width="1" />
               </svg>
 
-              <div class="sheet-plate img-zoom">
-                <img v-if="heroImage" :src="heroImage" :alt="`${service.name} — printed sample`" loading="eager" />
-                <div v-else class="sheet-blank">
+              <button v-if="heroImage" type="button" @click="openLightbox(heroImage)"
+                      class="sheet-plate img-zoom cursor-zoom-in w-full block p-0 border-0">
+                <img :src="heroImage" :alt="`${service.name} — printed sample`" loading="eager" />
+              </button>
+              <div v-else class="sheet-plate img-zoom">
+                <div class="sheet-blank">
                   <span class="font-display font-900 leading-none select-none"
                         :style="{ color: accent + '1F' }">{{ initials }}</span>
                   <span class="font-mono text-[10px] uppercase tracking-[0.2em] text-mist/50">
@@ -153,13 +156,13 @@
               </ol>
             </div>
 
-            <div v-if="restImages.length">
+            <div v-if="gallery.length">
               <h2 class="eyebrow mb-6">More from this service</h2>
               <div class="grid grid-cols-2 gap-4">
-                <div v-for="(img, i) in restImages" :key="i"
-                     class="img-zoom rounded-xl overflow-hidden bg-ink-800 aspect-square border border-white/[0.06]">
-                  <img :src="img" :alt="`${service.name} sample ${i + 2}`" loading="lazy" />
-                </div>
+                <button v-for="(img, i) in gallery" :key="i" type="button" @click="openLightbox(img)"
+                     class="img-zoom rounded-xl overflow-hidden bg-ink-800 aspect-square border border-white/[0.06] cursor-zoom-in p-0 block w-full">
+                  <img :src="img" :alt="`${service.name} sample ${i + 1}`" loading="lazy" />
+                </button>
               </div>
             </div>
           </div>
@@ -285,6 +288,43 @@
       <p class="font-body text-mist mb-8">That service isn't on the press. Browse everything we print instead.</p>
       <NuxtLink to="/services" class="btn-primary">Back to services</NuxtLink>
     </div>
+
+    <!-- ── LIGHTBOX ──────────────────────────────────────────── -->
+    <Teleport to="body">
+      <div v-if="lightbox" @click="lightbox = false"
+           class="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out">
+        <button type="button" @click.stop="lightbox = false"
+                class="absolute top-5 right-5 w-11 h-11 flex items-center justify-center text-cream-100 hover:text-blue-400 transition-colors">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+
+        <!-- Prev -->
+        <button v-if="lightboxImgs.length > 1" type="button" @click.stop="stepImg(-1)"
+                class="absolute left-3 sm:left-6 w-11 h-11 flex items-center justify-center text-cream-100 hover:text-blue-400 transition-colors">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+        <img :src="lightboxImgs[lightboxIndex]" :alt="service?.name" @click.stop
+             class="max-w-full max-h-full object-contain select-none" />
+
+        <!-- Next -->
+        <button v-if="lightboxImgs.length > 1" type="button" @click.stop="stepImg(1)"
+                class="absolute right-3 sm:right-6 w-11 h-11 flex items-center justify-center text-cream-100 hover:text-blue-400 transition-colors">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+
+        <span v-if="lightboxImgs.length > 1"
+              class="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-[11px] tracking-widest text-cream-200/70">
+          {{ lightboxIndex + 1 }} / {{ lightboxImgs.length }}
+        </span>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -320,14 +360,54 @@ const related = computed(() =>
 /* ---- derived display values ---- */
 const accent = computed(() => service.value?.color || FALLBACK)
 
-// images_url is often empty while image_url holds the single uploaded photo
+// Cover photo is image_url; gallery is extra shots only (images_url), never the cover.
+const heroImage = computed(() => service.value?.image_url || '')
 const gallery = computed<string[]>(() => {
   const many = service.value?.images_url
-  if (Array.isArray(many) && many.length) return many
-  return service.value?.image_url ? [service.value.image_url] : []
+  const extras = Array.isArray(many) ? many.filter(Boolean) : []
+  const hero = heroImage.value
+  return hero ? extras.filter(img => img !== hero) : extras
 })
-const heroImage = computed(() => gallery.value[0] || '')
-const restImages = computed(() => gallery.value.slice(1))
+const lightboxImgs = computed<string[]>(() => {
+  const imgs: string[] = []
+  if (heroImage.value) imgs.push(heroImage.value)
+  for (const img of gallery.value) {
+    if (img && !imgs.includes(img)) imgs.push(img)
+  }
+  return imgs
+})
+
+/* ---- lightbox ---- */
+const lightbox = ref(false)
+const lightboxIndex = ref(0)
+
+function openLightbox (src: string) {
+  const i = lightboxImgs.value.indexOf(src)
+  lightboxIndex.value = i >= 0 ? i : 0
+  lightbox.value = true
+}
+function stepImg (d: number) {
+  const n = lightboxImgs.value.length
+  if (!n) return
+  lightboxIndex.value = (lightboxIndex.value + d + n) % n
+}
+
+watch(lightbox, (open) => {
+  if (process.client) document.body.style.overflow = open ? 'hidden' : ''
+})
+function onKey (e: KeyboardEvent) {
+  if (!lightbox.value) return
+  if (e.key === 'Escape') lightbox.value = false
+  else if (e.key === 'ArrowRight') stepImg(1)
+  else if (e.key === 'ArrowLeft') stepImg(-1)
+}
+onMounted(() => process.client && window.addEventListener('keydown', onKey))
+onBeforeUnmount(() => {
+  if (process.client) {
+    window.removeEventListener('keydown', onKey)
+    document.body.style.overflow = ''
+  }
+})
 
 const refNo = computed(() => `HRY-${String(service.value?.id ?? 0).padStart(4, '0')}`)
 

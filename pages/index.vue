@@ -2,104 +2,113 @@
   <div>
 
     <!-- ══ HERO ════════════════════════════════════════════════════ -->
-    <section class="relative min-h-[92vh] flex items-center overflow-hidden">
-      <!-- BG grid + glows -->
+    <section class="relative overflow-hidden">
       <div class="absolute inset-0 bg-ink-950
-                  [background-image:linear-gradient(rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.025)_1px,transparent_1px)]
-                  [background-size:52px_52px]"/>
-      <div class="absolute top-1/4 -left-40 w-[700px] h-[700px] rounded-full
-                  bg-blue-500/[0.06] blur-[130px] pointer-events-none animate-pulse-slow"/>
-      <div class="absolute bottom-1/4 -right-40 w-[500px] h-[500px] rounded-full
-                  bg-red-600/[0.07] blur-[110px] pointer-events-none animate-pulse-slow"
-           style="animation-delay:2s"/>
+                  [background-image:linear-gradient(rgba(255,255,255,0.018)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.018)_1px,transparent_1px)]
+                  [background-size:56px_56px]"/>
+      <div class="absolute -top-24 left-1/4 w-[640px] h-[640px] rounded-full
+                  bg-blue-500/[0.07] blur-[140px] pointer-events-none"/>
+      <div class="absolute bottom-0 right-0 w-[420px] h-[420px] rounded-full
+                  bg-ember-500/[0.05] blur-[120px] pointer-events-none"/>
 
-      <div class="wrap relative z-10 w-full py-20 lg:py-0">
-        <div class="grid lg:grid-cols-[1fr_440px] xl:grid-cols-[1fr_500px] gap-12 lg:gap-20 items-center">
-
-          <!-- Left -->
-          <div>
-            <p class="lbl mb-7 animate-fade-in" style="opacity:0;animation-fill-mode:both">
-              Printing in Phnom Penh, Cambodia
-            </p>
-            <h1 class="font-display font-900 uppercase leading-none tracking-tight mb-8
-                       text-[clamp(3.5rem,9vw,8.5rem)]
-                       animate-fade-up" style="opacity:0;animation-fill-mode:both;animation-delay:.1s">
-              FROM<br/>
-              <span class="accent-text">DESIGN</span><br/>
-              <span class="accent-text">TO</span><br/>
-              Reality
-            </h1>
-            <p class="font-body text-mist text-lg leading-relaxed max-w-[440px] mb-10
-                      animate-fade-up" style="opacity:0;animation-fill-mode:both;animation-delay:.2s">
-              HRY Printing is the trusted choice for printing in Phnom Penh, Cambodia.
-              From razor-sharp business cards to building-scale banners, t-shirts, uniforms
-              and packaging — we deliver premium printing that commands attention.
-            </p>
-            <div class="flex flex-wrap gap-3 animate-fade-up"
-                 style="opacity:0;animation-fill-mode:both;animation-delay:.3s">
-              <NuxtLink to="/products" class="btn-primary">
-                Browse Catalogue
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                </svg>
-              </NuxtLink>
-              <NuxtLink to="/services" class="btn-outline">Our Services</NuxtLink>
+      <div class="relative z-10 pt-4 sm:pt-6 lg:pt-8 pb-16 lg:pb-24">
+        <div class="max-w-[1320px] mx-auto sm:px-8 xl:px-12">
+          <div class="relative sm:p-4 lg:p-5">
+            <div aria-hidden="true" class="hidden sm:block pointer-events-none absolute inset-0">
+              <span class="absolute top-0 left-0 w-5 h-5 border-t border-l border-white/45"/>
+              <span class="absolute top-0 right-0 w-5 h-5 border-t border-r border-white/45"/>
+              <span class="absolute bottom-0 left-0 w-5 h-5 border-b border-l border-white/45"/>
+              <span class="absolute bottom-0 right-0 w-5 h-5 border-b border-r border-white/45"/>
+              <span class="absolute top-0 left-1/2 -translate-x-1/2 w-8 border-t border-white/20"/>
+              <span class="absolute bottom-0 left-1/2 -translate-x-1/2 w-8 border-b border-white/20"/>
+              <span class="absolute left-0 top-1/2 -translate-y-1/2 h-8 border-l border-white/20"/>
+              <span class="absolute right-0 top-1/2 -translate-y-1/2 h-8 border-r border-white/20"/>
             </div>
 
-            <!-- Trust bar -->
-            <div class="flex items-center gap-8 mt-10 pt-10 border-t border-white/[0.07]
-                        animate-fade-in" style="opacity:0;animation-fill-mode:both;animation-delay:.5s">
-              <div v-for="t in trust" :key="t.label" class="text-center">
-                <div class="font-display font-900 text-3xl text-cream-100">{{ t.value }}</div>
-                <div class="font-mono text-[10px] text-mist tracking-widest uppercase mt-0.5">{{ t.label }}</div>
-              </div>
-            </div>
-          </div>
+            <figure class="group relative overflow-hidden bg-ink-900
+                           ring-1 ring-white/[0.12]
+                           shadow-[0_40px_120px_rgba(0,0,0,0.55)]">
+              <div class="absolute top-0 inset-x-0 z-20 h-px bg-gradient-to-r
+                          from-transparent via-blue-400/80 to-transparent"/>
+              <img
+                :src="bannerSrc"
+                alt="The HRY Printing and Embroidery team on the shop floor in Phnom Penh"
+                class="w-full h-auto block scale-[1.01] transition-transform duration-[1.4s] ease-out
+                       group-hover:scale-[1.035]"
+                width="1280"
+                height="720"
+                fetchpriority="high"
+              />
+              <div class="absolute inset-0 pointer-events-none
+                          shadow-[inset_0_0_140px_rgba(0,0,0,0.35)]
+                          bg-gradient-to-t from-ink-950/40 via-transparent to-ink-950/25"/>
 
-          <!-- Right: Live banner or decorative card -->
-          <div class="hidden lg:block animate-fade-up"
-               style="opacity:0;animation-fill-mode:both;animation-delay:.25s">
+              <figcaption class="absolute top-0 inset-x-0 z-10 flex items-center justify-between
+                                 px-4 py-3 sm:px-5 sm:py-4
+                                 bg-gradient-to-b from-ink-950/75 to-transparent">
+                <span class="font-mono text-[10px] tracking-[0.28em] text-cream-100/85 uppercase">
+                  Est. 2009 · Phnom Penh
+                </span>
+                <span class="hidden md:inline font-mono text-[10px] tracking-[0.28em] text-cream-100/50 uppercase">
+                  Studio floor · Plate 01
+                </span>
+              </figcaption>
+            </figure>
 
-            <!-- Hero banner — API or demo poster fallback -->
-            <div class="relative aspect-[4/5] overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.7)]">
-              <img :src="heroBanner.image_url" :alt="heroBanner.title"
-                   class="w-full h-full object-cover"/>
-              <div class="absolute inset-0 bg-gradient-to-t from-ink-950/90 via-ink-950/10 to-transparent"/>
-              <div class="absolute bottom-0 left-0 right-0 p-7">
-                <div v-if="heroBanner.subtitle" class="font-mono text-[10px] text-blue-400 tracking-widest uppercase mb-1">
-                  {{ heroBanner.subtitle }}
-                </div>
-                <div class="font-display font-900 text-2xl text-cream-100 uppercase leading-tight">
-                  {{ heroBanner.title }}
-                </div>
-                <NuxtLink v-if="heroBanner.button_text" :to="heroBanner.button_url || '/products'"
-                  class="mt-4 inline-flex items-center gap-2 font-mono text-xs text-blue-400
-                         hover:text-blue-300 transition-colors uppercase tracking-widest">
-                  {{ heroBanner.button_text }}
-                  <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
-                  </svg>
-                </NuxtLink>
-              </div>
-              <!-- Second banner thumbnail -->
-              <div v-if="secondaryBanner" class="absolute -top-5 -right-5 w-28 h-28 overflow-hidden
-                                             border-2 border-blue-500/30 shadow-xl animate-float">
-                <img :src="secondaryBanner.image_url" :alt="secondaryBanner.title" class="w-full h-full object-cover"/>
-              </div>
-              <!-- Demo badge when using fallback poster -->
-              <div v-else-if="!banners.length" class="absolute -top-5 -left-5 bg-blue-500 p-5 animate-float">
-                <div class="font-display font-900 text-4xl text-white leading-none">15+</div>
-                <div class="font-mono text-[10px] text-white/70 uppercase tracking-widest">Years</div>
-              </div>
+            <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2
+                        px-5 sm:px-1 pt-4">
+              <p class="font-mono text-[10px] tracking-[0.22em] text-mist uppercase">
+                The HRY team · Borey Laykong, Phnom Penh
+              </p>
+              <p class="font-mono text-[10px] tracking-[0.22em] text-mist/70 uppercase">
+                Screen · Embroidery · Heat Press · Design
+              </p>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Scroll hint -->
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 opacity-40">
-        <span class="font-mono text-[10px] text-mist tracking-[0.3em] uppercase">Scroll</span>
-        <div class="w-px h-10 bg-gradient-to-b from-mist to-transparent"/>
+        <div class="wrap mt-10 lg:mt-14">
+          <div class="grid lg:grid-cols-[1.15fr_0.85fr] gap-10 lg:gap-20 items-end">
+            <div class="animate-fade-up" style="opacity:0;animation-fill-mode:both">
+              <p class="lbl mb-5">Printing in Phnom Penh, Cambodia</p>
+              <h1 class="font-display font-900 uppercase leading-[0.88] tracking-tight
+                         text-[clamp(3rem,8vw,7.25rem)] text-cream-100">
+                FROM DESIGN<br/>
+                TO <span class="accent-text">REALITY</span>
+              </h1>
+            </div>
+
+            <div class="lg:border-l lg:border-white/[0.08] lg:pl-12
+                        animate-fade-up" style="opacity:0;animation-fill-mode:both;animation-delay:.12s">
+              <p class="font-body text-mist text-lg leading-relaxed max-w-[460px] mb-8">
+                HRY Printing is the trusted choice for printing in Phnom Penh, Cambodia.
+                From razor-sharp business cards to building-scale banners, t-shirts, uniforms
+                and packaging — we deliver premium printing that commands attention.
+              </p>
+              <div class="flex flex-wrap gap-3">
+                <NuxtLink to="/products" class="btn-primary">
+                  Browse Catalogue
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                  </svg>
+                </NuxtLink>
+                <NuxtLink to="/services" class="btn-outline">Our Services</NuxtLink>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-12 lg:mt-16 pt-8 border-t border-white/[0.07]
+                      grid grid-cols-2 lg:grid-cols-4 gap-y-8 lg:gap-y-0
+                      lg:divide-x lg:divide-white/[0.08]
+                      animate-fade-in"
+               style="opacity:0;animation-fill-mode:both;animation-delay:.28s">
+            <div v-for="t in trust" :key="t.label" class="lg:px-8 first:lg:pl-0">
+              <div class="w-8 h-px bg-blue-500 mb-3"/>
+              <div class="font-display font-900 text-4xl text-cream-100 leading-none">{{ t.value }}</div>
+              <div class="font-mono text-[10px] text-mist tracking-[0.22em] uppercase mt-2">{{ t.label }}</div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -108,7 +117,7 @@
       <div class="ticker-wrap">
         <div class="ticker-track">
           <span v-for="i in 16" :key="i"
-            class="inline-flex items-center gap-5 font-display font-900 text-white text-xl uppercase tracking-widest px-7">
+                class="inline-flex items-center gap-5 font-display font-900 text-white text-xl uppercase tracking-widest px-7">
             HRY PRINTING
             <svg class="w-4 h-4 opacity-50" fill="currentColor" viewBox="0 0 20 20">
               <path d="M10 18a8 8 0 100-16 8 8 0 000 16z"/>
@@ -197,7 +206,7 @@
           </div>
           <div class="grid grid-cols-2 gap-4">
             <div v-for="f in features" :key="f.title"
-              class="group card p-6 flex flex-col gap-4">
+                 class="group card p-6 flex flex-col gap-4">
               <div class="w-11 h-11 bg-blue-500/10 group-hover:bg-blue-500
                           flex items-center justify-center transition-all duration-300">
                 <svg class="w-5 h-5 text-blue-500 group-hover:text-white transition-colors duration-300"
@@ -279,7 +288,7 @@
         </p>
         <div class="flex flex-wrap gap-4 justify-center">
           <a href="https://t.me/Hryprintingshop" target="_blank" rel="noopener noreferrer"
-            class="inline-flex items-center gap-3 bg-ink-950 hover:bg-ink-900 text-cream-100
+             class="inline-flex items-center gap-3 bg-ink-950 hover:bg-ink-900 text-cream-100
                    font-display font-900 text-xl uppercase tracking-wide px-10 py-4
                    transition-all duration-200 hover:-translate-y-px hover:shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
             Get Free Quote
@@ -288,7 +297,7 @@
             </svg>
           </a>
           <NuxtLink to="/products"
-            class="inline-flex items-center gap-3 border-2 border-white/40 hover:border-white
+                    class="inline-flex items-center gap-3 border-2 border-white/40 hover:border-white
                    text-white hover:bg-white/10
                    font-display font-900 text-xl uppercase tracking-wide px-10 py-4
                    transition-all duration-200">
@@ -302,11 +311,14 @@
 </template>
 
 <script setup lang="ts">
+import bannerSrc from '~/assets/image/banner.png'
+
 useSeoMeta({
   title: 'Printing in Phnom Penh, Cambodia | HRY Printing – Best Printing Service',
   description: 'HRY Printing is the best printing company for printing in Phnom Penh, Cambodia. T-shirt printing, uniforms, business cards, banners, stickers, packaging, silk screen, DTF, sublimation & embroidery. Get a free quote today.',
   ogTitle: 'Printing in Phnom Penh, Cambodia – HRY Printing',
   ogDescription: 'The best printing in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more. Get a free quote from HRY Printing today.',
+  ogImage: bannerSrc,
 })
 
 const faqs = [
@@ -348,30 +360,17 @@ useHead({
 
 const api = useApi()
 
-const products       = ref<any[]>([])
-const services       = ref<any[]>([])
-const testimonials   = ref<any[]>([])
-const banners        = ref<any[]>([])
+const products        = ref<any[]>([])
+const services        = ref<any[]>([])
+const testimonials    = ref<any[]>([])
 const loadingProducts = ref(true)
 const loadingServices = ref(true)
 
-const demoBanner = {
-  image_url:   '/demo/demo-poster.png',
-  title:       'Premium Printing',
-  subtitle:    'Phnom Penh, Cambodia',
-  button_text: 'Browse Products',
-  button_url:  '/products',
-}
-
-const heroBanner      = computed(() => banners.value[0] ?? demoBanner)
-const secondaryBanner = computed(() => banners.value[1] ?? null)
-
 onMounted(async () => {
   await Promise.allSettled([
-    api.getFeatured().then(r   => { products.value     = r?.data  ?? []; loadingProducts.value = false }),
-    api.getServices().then(r   => { services.value     = r?.data  ?? []; loadingServices.value = false }),
-    api.getTestimonials().then(r => { testimonials.value = r?.data ?? [] }),
-    api.getActiveBanners().then(r=> { banners.value      = r?.data ?? [] }),
+    api.getFeatured().then(r      => { products.value     = r?.data ?? []; loadingProducts.value = false }),
+    api.getServices().then(r      => { services.value     = r?.data ?? []; loadingServices.value = false }),
+    api.getTestimonials().then(r  => { testimonials.value = r?.data ?? [] }),
   ])
 })
 

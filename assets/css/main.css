@@ -99,6 +99,12 @@
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
+  .accent-text {
+    background: linear-gradient(135deg, #93C5FD, #3B82F6);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
 
 /* ── Page transition ──────────────────────────── */

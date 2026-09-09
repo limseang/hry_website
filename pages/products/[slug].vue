@@ -27,16 +27,17 @@
 
         <div class="grid lg:grid-cols-2 gap-12 xl:gap-20">
 
-          <!-- Images -->
+          <!-- Images — top always shows the main product photo -->
           <div class="space-y-3 lg:sticky lg:top-24 lg:self-start">
-            <div class="zoom aspect-square bg-ink-800 border border-white/[0.07]">
-              <img :src="activeImg" :alt="product.name" class="w-full h-full object-cover"/>
-            </div>
+            <button type="button" @click="openLightbox(mainImg)"
+                    class="zoom block w-full aspect-square bg-ink-800 border border-white/[0.07] cursor-zoom-in overflow-hidden">
+              <img :src="mainImg" :alt="product.name" class="w-full h-full object-cover"/>
+            </button>
             <div v-if="allImgs.length>1" class="flex gap-2.5 overflow-x-auto pb-1">
-              <button v-for="(img,i) in allImgs" :key="i" @click="activeImg=img"
-                      class="w-20 h-20 shrink-0 border-2 overflow-hidden transition-all duration-200"
-                      :class="activeImg===img ? 'border-blue-500' : 'border-white/10 hover:border-white/30'">
-                <img :src="img" :alt="`img-${i}`" class="w-full h-full object-cover"/>
+              <button v-for="(img,i) in allImgs" :key="i" @click="openLightbox(img)"
+                      class="w-20 h-20 shrink-0 border-2 overflow-hidden transition-all duration-200 cursor-zoom-in"
+                      :class="img===mainImg ? 'border-blue-500' : 'border-white/10 hover:border-white/30'">
+                <img :src="img" :alt="`${product.name} ${i+1}`" class="w-full h-full object-cover"/>
               </button>
             </div>
           </div>
@@ -191,6 +192,36 @@
         <NuxtLink to="/products" class="btn-primary">Back to Products</NuxtLink>
       </div>
     </div>
+
+    <!-- Lightbox — full-size view, click backdrop or Esc to close -->
+    <Teleport to="body">
+      <div v-if="lightbox" @click="closeLightbox"
+           class="fixed inset-0 z-[200] bg-black/92 flex items-center justify-center p-4 sm:p-8 cursor-zoom-out">
+        <button type="button" @click.stop="closeLightbox"
+                class="absolute top-5 right-5 z-10 w-11 h-11 flex items-center justify-center text-cream-100 hover:text-blue-400 transition-colors"
+                aria-label="Close">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+        <button v-if="allImgs.length>1" type="button" @click.stop="lightboxNav(-1)"
+                class="absolute left-3 sm:left-6 top-1/2 -translate-y-1/2 z-10 w-11 h-11 flex items-center justify-center text-cream-100 hover:text-blue-400 transition-colors"
+                aria-label="Previous image">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7"/>
+          </svg>
+        </button>
+        <button v-if="allImgs.length>1" type="button" @click.stop="lightboxNav(1)"
+                class="absolute right-3 sm:right-6 top-1/2 -translate-y-1/2 z-10 w-11 h-11 flex items-center justify-center text-cream-100 hover:text-blue-400 transition-colors"
+                aria-label="Next image">
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7"/>
+          </svg>
+        </button>
+        <img :src="lightboxSrc" :alt="product?.name" @click.stop
+             class="max-w-full max-h-[90vh] w-auto h-auto object-contain select-none"/>
+      </div>
+    </Teleport>
   </div>
 </template>
 
@@ -200,18 +231,60 @@ const api     = useApi()
 const { quoteBody, quoteLink, productUrl } = useTelegramQuote()
 const product = ref<any>(null)
 const loading = ref(true)
-const activeImg = ref('')
 const selSize   = ref('')
 const selFin    = ref('')
 const qty       = ref(1)
 const copied    = ref(false)
+const lightbox  = ref(false)
+const lightboxSrc = ref('')
 const messageBody = ref('')
 
 const allImgs = computed(() => {
   const a: string[] = []
-  if (product.value?.thumbnail_url) a.push(product.value.thumbnail_url)
-  if (product.value?.images_url?.length) a.push(...product.value.images_url)
+  const main = product.value?.image_url || product.value?.thumbnail_url
+  if (main) a.push(main)
+  if (product.value?.images_url?.length) {
+    for (const img of product.value.images_url) {
+      if (img && !a.includes(img)) a.push(img)
+    }
+  }
   return a
+})
+
+const mainImg = computed(() => product.value?.image_url || product.value?.thumbnail_url || allImgs.value[0] || '')
+
+function openLightbox (src: string) {
+  if (!src) return
+  lightboxSrc.value = src
+  lightbox.value = true
+}
+function closeLightbox () {
+  lightbox.value = false
+}
+function lightboxNav (dir: number) {
+  const imgs = allImgs.value
+  if (imgs.length < 2) return
+  const i = imgs.indexOf(lightboxSrc.value)
+  const next = (Math.max(i, 0) + dir + imgs.length) % imgs.length
+  lightboxSrc.value = imgs[next]
+}
+
+/* close on Escape, arrows to browse, lock scroll while open */
+watch(lightbox, (open) => {
+  if (import.meta.client) document.body.style.overflow = open ? 'hidden' : ''
+})
+function onKey (e: KeyboardEvent) {
+  if (!lightbox.value) return
+  if (e.key === 'Escape') closeLightbox()
+  if (e.key === 'ArrowLeft') lightboxNav(-1)
+  if (e.key === 'ArrowRight') lightboxNav(1)
+}
+onMounted(() => import.meta.client && window.addEventListener('keydown', onKey))
+onBeforeUnmount(() => {
+  if (import.meta.client) {
+    window.removeEventListener('keydown', onKey)
+    document.body.style.overflow = ''
+  }
 })
 
 const minQty = computed(() => Number(product.value?.min_quantity) || 1)
@@ -260,7 +333,7 @@ useSeoMeta({
   ogUrl: () => productPageUrl.value,
   ogTitle: () => product.value ? `${product.value.name} | HRY Printing` : 'HRY Printing',
   ogDescription: () => product.value?.short_description || product.value?.description || 'Printing in Phnom Penh, Cambodia.',
-  ogImage: () => product.value?.thumbnail_url || '',
+  ogImage: () => product.value?.image_url || product.value?.thumbnail_url || '',
   twitterCard: 'summary_large_image',
 })
 
@@ -269,7 +342,6 @@ onMounted(async () => {
     const r = await api.getProduct(route.params.slug as string)
     product.value = r?.data ?? null
     if (product.value) {
-      activeImg.value = product.value.thumbnail_url || ''
       selSize.value   = product.value.size_options?.[0]    || ''
       selFin.value    = product.value.finishing_options?.[0] || ''
       qty.value       = minQty.value
