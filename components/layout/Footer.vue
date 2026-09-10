@@ -41,7 +41,7 @@
         <div>
           <h4 class="font-display font-extrabold text-sm uppercase tracking-widest text-cream-100 mb-5">Services</h4>
           <ul class="space-y-2.5">
-            <li v-for="l in serviceLinks" :key="l.label">
+            <li v-for="l in serviceLinks" :key="l.to">
               <NuxtLink :to="l.to" class="font-body text-sm text-mist hover:text-blue-400 transition-colors">
                 {{ l.label }}
               </NuxtLink>
@@ -87,6 +87,23 @@
 </template>
 
 <script setup lang="ts">
+const api = useApi()
+
+const { data: servicesRes } = await useAsyncData('services:all', async () => {
+  try { return await api.getServices() } catch { return null }
+})
+
+const serviceLinks = computed(() => {
+  const rows = servicesRes.value?.data !== undefined ? servicesRes.value.data : servicesRes.value
+  return (Array.isArray(rows) ? rows : [])
+    .filter((s: any) => s && s.slug)
+    .sort((a: any, b: any) => (a.sort_order ?? 99) - (b.sort_order ?? 99))
+    .map((s: any) => ({
+      label: s.name,
+      to: `/services/${s.slug}`,
+    }))
+})
+
 const socials = [
   { name:'Facebook', abbr:'Fb', href:'https://web.facebook.com/Hryprintingshop' },
 ]
@@ -103,15 +120,6 @@ const fbPluginSrc =
 const flagCounterSrc =
     'https://s01.flagcounter.com/count2/CODE/bg_FFFFFF/txt_000000/border_CCCCCC/columns_3/maxflags_12/viewers_0/labels_1/pageviews_1/flags_1/percent_0/'
 const flagCounterLink = 'https://info.flagcounter.com/CODE'
-
-const serviceLinks = [
-  { label:'Silk Screen Printing',  to:'/services/offset-printing'      },
-  { label:'Embroidery',            to:'/services/digital-printing'     },
-  { label:'DTF Printing',          to:'/services/large-format-printing'},
-  { label:'Sublimation Printing',  to:'/services/design-services'      },
-  { label:'School Uniform',        to:'/services/finishing-services'   },
-  { label:'Staff Uniform',         to:'/services/finishing-services'   },
-]
 
 const contacts = [
   { label:'Phone',   value:'010-871-011',   href:'tel:85510871011',           icon:'M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z' },
