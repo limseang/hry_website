@@ -90,8 +90,13 @@
               </svg>
 
               <button v-if="heroImage" type="button" @click="openLightbox(heroImage)"
-                      class="sheet-plate img-zoom cursor-zoom-in w-full block p-0 border-0">
-                <img :src="heroImage" :alt="`${service.name} — printed sample`" loading="eager" />
+                      class="sheet-plate img-zoom cursor-zoom-in w-full block p-0 border-0"
+                      aria-label="Open cover photo full size">
+                <img :src="heroImage" :alt="`${service.name} — printed sample`" loading="eager"
+                     class="w-full h-full object-cover" />
+                <span v-if="lightboxImgs.length > 1" class="sheet-count font-mono" aria-hidden="true">
+                  1 / {{ lightboxImgs.length }}
+                </span>
               </button>
               <div v-else class="sheet-plate img-zoom">
                 <div class="sheet-blank">
@@ -126,10 +131,10 @@
               </p>
             </div>
 
-            <div v-if="service.features?.length">
+            <div v-if="featureList.length">
               <h2 class="eyebrow mb-6">What's included</h2>
               <ul class="grid sm:grid-cols-2 gap-3">
-                <li v-for="f in service.features" :key="f"
+                <li v-for="f in featureList" :key="f"
                     class="flex items-start gap-3 bg-ink-800/60 border border-white/[0.06] rounded-xl p-4">
                   <span class="w-5 h-5 rounded-md flex items-center justify-center shrink-0 mt-0.5"
                         :style="{ background: accent + '1A' }">
@@ -147,7 +152,7 @@
               <h2 class="eyebrow mb-6">How ordering works</h2>
               <ol class="steps">
                 <li v-for="(s, i) in steps" :key="s.title" class="step">
-                  <span class="step-n font-mono">{{ String(i + 1).padStart(2, '0') }}</span>
+                  <span class="step-n font-mono">{{ pad(i + 1) }}</span>
                   <div>
                     <h3 class="font-body font-semibold text-cream-200 mb-1.5">{{ s.title }}</h3>
                     <p class="font-body text-sm text-mist leading-relaxed">{{ s.body }}</p>
@@ -156,14 +161,64 @@
               </ol>
             </div>
 
-            <div v-if="gallery.length">
-              <h2 class="eyebrow mb-6">More from this service</h2>
-              <div class="grid grid-cols-2 gap-4">
-                <button v-for="(img, i) in gallery" :key="i" type="button" @click="openLightbox(img)"
-                     class="img-zoom rounded-xl overflow-hidden bg-ink-800 aspect-square border border-white/[0.06] cursor-zoom-in p-0 block w-full">
-                  <img :src="img" :alt="`${service.name} sample ${i + 1}`" loading="lazy" />
+            <!-- ── SAMPLE GALLERY (redesigned) ─────────────────── -->
+            <div v-if="gallery.length" class="gal-wrap"
+                 :style="{ '--accent': accent, '--accent-line': accent + '66', '--accent-soft': accent + '1F' }">
+
+              <div class="gal-head">
+                <h2 class="eyebrow gal-head-title">More from this service</h2>
+                <button v-if="lightboxImgs.length > 1" type="button" class="gal-all"
+                        @click="openLightbox(lightboxImgs[0])">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"
+                          d="M4 5h7v7H4zM13 5h7v7h-7zM4 14h7v5H4zM13 14h7v5h-7z" />
+                  </svg>
+                  View all {{ lightboxImgs.length }} photos
                 </button>
               </div>
+
+              <div class="gal" :data-feature="visibleGallery.length >= 3 ? '1' : '0'">
+                <button
+                  v-for="(img, i) in visibleGallery"
+                  :key="img + i"
+                  type="button"
+                  class="gal-item"
+                  :class="{ 'is-more': isMoreTile(i) }"
+                  :aria-label="isMoreTile(i)
+                    ? `Show all ${gallery.length} samples`
+                    : `Open ${service.name} sample ${i + 1} full size`"
+                  @click="onTile(img, i)"
+                >
+                  <span v-if="!loaded[img]" class="gal-skel" aria-hidden="true" />
+                  <img :src="img" :alt="`${service.name} sample ${i + 1}`"
+                       loading="lazy" decoding="async"
+                       :class="{ ready: loaded[img] }"
+                       @load="loaded[img] = true" />
+
+                  <span class="gal-veil" aria-hidden="true" />
+
+                  <span v-if="!isMoreTile(i)" class="gal-no font-mono" aria-hidden="true">
+                    Sample {{ pad(i + 1) }}
+                  </span>
+
+                  <span v-if="!isMoreTile(i)" class="gal-open" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"
+                            d="M15 3h6v6M9 21H3v-6M21 3l-7.5 7.5M3 21l7.5-7.5" />
+                    </svg>
+                  </span>
+
+                  <span v-else class="gal-more" aria-hidden="true">
+                    <em class="font-display">+{{ hiddenCount }}</em>
+                    <small class="font-mono">more samples</small>
+                  </span>
+                </button>
+              </div>
+
+              <button v-if="showAll && gallery.length > GAL_PREVIEW" type="button"
+                      class="gal-less font-mono" @click="collapseGallery">
+                Show fewer samples
+              </button>
             </div>
           </div>
 
@@ -182,7 +237,7 @@
                 </div>
                 <div>
                   <dt>Price</dt>
-                  <dd>Quoted per job</dd>
+                  <dd>{{ startingPrice ? `From $${startingPrice}` : 'Quoted per job' }}</dd>
                 </div>
                 <div>
                   <dt>Turnaround</dt>
@@ -291,38 +346,119 @@
 
     <!-- ── LIGHTBOX ──────────────────────────────────────────── -->
     <Teleport to="body">
-      <div v-if="lightbox" @click="lightbox = false"
-           class="fixed inset-0 z-[100] bg-black/90 flex items-center justify-center p-4 cursor-zoom-out">
-        <button type="button" @click.stop="lightbox = false"
-                class="absolute top-5 right-5 w-11 h-11 flex items-center justify-center text-cream-100 hover:text-blue-400 transition-colors">
-          <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
+      <div
+        v-if="lightbox"
+        class="lb"
+        :class="{ 'lb-swiping': lbDragging, 'lb-zoomed': lbZoom }"
+        :style="{ '--lb-x': lbX + 'px', '--lb-y': lbY + 'px', '--lb-scale': lbZoom ? 2 : 1, '--lb-origin': lbOrigin }"
+        role="dialog"
+        aria-modal="true"
+        :aria-label="`${service?.name || 'Service'} photos`"
+      >
+        <!-- top bar: what you are looking at, and the way out -->
+        <div class="lb-top" @click.stop>
+          <div class="lb-title">
+            <strong class="font-body">{{ service?.name }}</strong>
+            <span class="font-mono">Sample {{ pad(lightboxIndex + 1) }} of {{ pad(lightboxImgs.length) }}</span>
+          </div>
+          <div class="lb-tools">
+            <button type="button" class="lb-tool" :aria-pressed="lbZoom ? 'true' : 'false'"
+                    :aria-label="lbZoom ? 'Zoom out' : 'Zoom in'" @click="toggleZoom()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="11" cy="11" r="7" stroke-width="1.6" />
+                <path stroke-linecap="round" stroke-width="1.8" d="M20 20l-3.6-3.6" />
+                <path stroke-linecap="round" stroke-width="1.8" d="M8 11h6" />
+                <path v-if="!lbZoom" stroke-linecap="round" stroke-width="1.8" d="M11 8v6" />
+              </svg>
+            </button>
+            <a v-if="service" :href="serviceLink(service)" target="_blank" rel="noopener" class="lb-tool lb-ask">
+              <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M21.94 4.38 18.6 20.1c-.25 1.11-.91 1.38-1.84.86l-5.09-3.75-2.45 2.36c-.27.27-.5.5-1.03.5l.37-5.2 9.47-8.56c.41-.37-.09-.57-.64-.2L5.68 13.3.65 11.72c-1.09-.34-1.11-1.09.23-1.62L20.53 2.5c.91-.33 1.71.21 1.41 1.88Z" />
+              </svg>
+              <em>Ask about this sample</em>
+            </a>
+            <button type="button" class="lb-tool" aria-label="Close photos" @click="closeLightbox">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+        </div>
 
-        <!-- Prev -->
-        <button v-if="lightboxImgs.length > 1" type="button" @click.stop="stepImg(-1)"
-                class="absolute left-3 sm:left-6 w-11 h-11 flex items-center justify-center text-cream-100 hover:text-blue-400 transition-colors">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+        <div
+          class="lb-stage"
+          @click="onLbBackdrop"
+          @touchstart.passive="onLbTouchStart"
+          @touchmove="onLbTouchMove"
+          @touchend="onLbTouchEnd"
+          @touchcancel="onLbTouchEnd"
+        >
+          <button
+            v-if="lightboxImgs.length > 1"
+            type="button"
+            class="lb-side lb-prev"
+            aria-label="Previous photo"
+            @click.stop="stepImg(-1)"
+          >
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-        <img :src="lightboxImgs[lightboxIndex]" :alt="service?.name" @click.stop
-             class="max-w-full max-h-full object-contain select-none" />
+          <img
+            :src="lightboxImgs[lightboxIndex]"
+            :alt="`${service?.name} sample ${lightboxIndex + 1}`"
+            class="lb-img"
+            draggable="false"
+            @click.stop="toggleZoom($event)"
+          />
 
-        <!-- Next -->
-        <button v-if="lightboxImgs.length > 1" type="button" @click.stop="stepImg(1)"
-                class="absolute right-3 sm:right-6 w-11 h-11 flex items-center justify-center text-cream-100 hover:text-blue-400 transition-colors">
-          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+          <button
+            v-if="lightboxImgs.length > 1"
+            type="button"
+            class="lb-side lb-next"
+            aria-label="Next photo"
+            @click.stop="stepImg(1)"
+          >
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.6" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </div>
 
-        <span v-if="lightboxImgs.length > 1"
-              class="absolute bottom-6 left-1/2 -translate-x-1/2 font-mono text-[11px] tracking-widest text-cream-200/70">
-          {{ lightboxIndex + 1 }} / {{ lightboxImgs.length }}
-        </span>
+        <div class="lb-chrome" @click.stop>
+          <div v-if="lightboxImgs.length > 1" class="lb-dock">
+            <button type="button" class="lb-nav" aria-label="Previous photo" @click="stepImg(-1)">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
+            <span class="lb-count font-mono">
+              {{ lightboxIndex + 1 }} / {{ lightboxImgs.length }}
+              <small>{{ lbZoom ? 'Drag to move' : 'Swipe to change' }}</small>
+            </span>
+            <button type="button" class="lb-nav" aria-label="Next photo" @click="stepImg(1)">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
+          </div>
+
+          <div v-if="lightboxImgs.length > 1" ref="lbThumbsEl" class="lb-thumbs">
+            <button
+              v-for="(img, i) in lightboxImgs"
+              :key="img + i"
+              type="button"
+              :data-on="i === lightboxIndex ? '1' : '0'"
+              :class="{ on: i === lightboxIndex }"
+              :aria-label="`Photo ${i + 1}`"
+              :aria-current="i === lightboxIndex ? 'true' : undefined"
+              @click="goTo(i)"
+            >
+              <img :src="img" alt="" draggable="false" />
+            </button>
+          </div>
+        </div>
       </div>
     </Teleport>
   </div>
@@ -331,12 +467,60 @@
 <script setup lang="ts">
 const route = useRoute()
 const api = useApi()
+const { apiBase } = useRuntimeConfig().public
 const { serviceLink, serviceUrl, TELEGRAM_USER } = useTelegramQuote()
 
 const FALLBACK = '#3B82F6'
+const apiOrigin = String(apiBase || '').replace(/\/api\/v1\/?$/, '')
 
-/* ---- data (SSR-friendly, so meta tags land in the HTML) ---- */
-const { data: svcRes, pending } = await useAsyncData(
+function unwrapRecord (res: any) {
+  if (!res || typeof res !== 'object') return null
+  const row = (res.success !== undefined || res.message !== undefined) ? res.data : res
+  if (!row || typeof row !== 'object' || Array.isArray(row)) return null
+  return row
+}
+
+function unwrapList (res: any): any[] {
+  const rows = res?.data !== undefined ? res.data : res
+  return (Array.isArray(rows) ? rows : []).filter((x: any) => x && x.slug)
+}
+
+function asList (v: any): string[] {
+  if (Array.isArray(v)) return v.map(String).map(s => s.trim()).filter(Boolean)
+  if (typeof v === 'string' && v.trim()) {
+    try {
+      const parsed = JSON.parse(v)
+      if (Array.isArray(parsed)) return asList(parsed)
+    } catch { /* not JSON */ }
+    return v.split(/[\n,]/).map(s => s.trim()).filter(Boolean)
+  }
+  return []
+}
+
+function absMedia (src: string | undefined | null): string {
+  if (!src) return ''
+  const s = String(src).trim()
+  if (!s) return ''
+  if (/^https?:\/\//i.test(s)) {
+    if (process.client && location.protocol === 'https:') {
+      try {
+        const u = new URL(s)
+        if (u.protocol === 'http:' && u.pathname.startsWith('/storage/')) {
+          return `${location.origin}${u.pathname}${u.search}`
+        }
+      } catch { /* keep original */ }
+    }
+    return s
+  }
+  const path = s.replace(/^\/?(storage\/)?/, '')
+  const origin = (process.client && location.protocol === 'https:') ? location.origin : apiOrigin
+  return origin ? `${origin}/storage/${path}` : s
+}
+
+const pad = (n: number) => String(n).padStart(2, '0')
+
+/* ---- data (SSR snapshot + client refresh so CMS edits show without a rebuild) ---- */
+const { data: svcRes, pending, refresh } = await useAsyncData(
     () => `service:${route.params.slug}`,
     async () => {
       try { return await api.getService(route.params.slug as string) } catch { return null }
@@ -344,14 +528,18 @@ const { data: svcRes, pending } = await useAsyncData(
     { watch: [() => route.params.slug] },
 )
 
-const { data: allRes } = await useAsyncData('services:all', async () => {
+const { data: allRes, refresh: refreshAll } = await useAsyncData('services:all', async () => {
   try { return await api.getServices() } catch { return null }
 })
 
-const service = computed<any>(() => (svcRes.value as any)?.data ?? null)
-const all = computed<any[]>(() =>
-    ((allRes.value as any)?.data ?? []).filter((x: any) => x && x.slug),
-)
+onMounted(() => {
+  refresh()
+  refreshAll()
+  if (process.client) window.addEventListener('keydown', onKey)
+})
+
+const service = computed<any>(() => unwrapRecord(svcRes.value))
+const all = computed<any[]>(() => unwrapList(allRes.value))
 
 const related = computed(() =>
     all.value.filter(s => s.slug !== route.params.slug).slice(0, 4),
@@ -359,14 +547,22 @@ const related = computed(() =>
 
 /* ---- derived display values ---- */
 const accent = computed(() => service.value?.color || FALLBACK)
+const featureList = computed(() => asList(service.value?.features))
+const startingPrice = computed(() => {
+  const n = Number(service.value?.price_starting_from)
+  return Number.isFinite(n) && n > 0 ? Math.round(n) : null
+})
 
 // Cover photo is image_url; gallery is extra shots only (images_url), never the cover.
-const heroImage = computed(() => service.value?.image_url || '')
+const heroImage = computed(() => absMedia(service.value?.image_url || service.value?.image))
 const gallery = computed<string[]>(() => {
   const many = service.value?.images_url
-  const extras = Array.isArray(many) ? many.filter(Boolean) : []
+  const rel = service.value?.images
+  const extras = (Array.isArray(many) && many.length ? many : Array.isArray(rel) ? rel : [])
+      .map((x: string) => absMedia(x))
+      .filter(Boolean)
   const hero = heroImage.value
-  return hero ? extras.filter(img => img !== hero) : extras
+  return hero ? extras.filter((img: string) => img !== hero) : extras
 })
 const lightboxImgs = computed<string[]>(() => {
   const imgs: string[] = []
@@ -377,31 +573,184 @@ const lightboxImgs = computed<string[]>(() => {
   return imgs
 })
 
+/* ---- gallery: show a tidy block first, reveal the rest on request ---- */
+const GAL_PREVIEW = 5
+const showAll = ref(false)
+const loaded = reactive<Record<string, boolean>>({})
+
+const visibleGallery = computed(() =>
+    showAll.value ? gallery.value : gallery.value.slice(0, GAL_PREVIEW),
+)
+const hiddenCount = computed(() => Math.max(0, gallery.value.length - visibleGallery.value.length))
+const isMoreTile = (i: number) => hiddenCount.value > 0 && i === visibleGallery.value.length - 1
+
+function onTile (img: string, i: number) {
+  if (isMoreTile(i)) {
+    showAll.value = true
+    return
+  }
+  openLightbox(img)
+}
+function collapseGallery () {
+  showAll.value = false
+  if (process.client) {
+    document.querySelector('.gal-wrap')?.scrollIntoView({ block: 'start', behavior: 'smooth' })
+  }
+}
+watch(() => route.params.slug, () => { showAll.value = false })
+
 /* ---- lightbox ---- */
 const lightbox = ref(false)
 const lightboxIndex = ref(0)
+const lbX = ref(0)
+const lbY = ref(0)
+const lbDragging = ref(false)
+const lbZoom = ref(false)
+const lbOrigin = ref('50% 50%')
+const lbThumbsEl = ref<HTMLElement | null>(null)
+let lbStartX = 0
+let lbStartY = 0
+let lbPanX = 0
+let lbPanY = 0
+let lbMoved = false
+let lbAxis: 'x' | 'y' | null = null
+let lbClickLock = false
 
 function openLightbox (src: string) {
   const i = lightboxImgs.value.indexOf(src)
   lightboxIndex.value = i >= 0 ? i : 0
   lightbox.value = true
+  resetLbGesture()
+}
+function closeLightbox () {
+  lightbox.value = false
+  resetLbGesture()
 }
 function stepImg (d: number) {
   const n = lightboxImgs.value.length
   if (!n) return
   lightboxIndex.value = (lightboxIndex.value + d + n) % n
+  resetLbGesture()
+}
+function goTo (i: number) {
+  lightboxIndex.value = i
+  resetLbGesture()
+}
+function resetLbGesture () {
+  lbX.value = 0
+  lbY.value = 0
+  lbDragging.value = false
+  lbZoom.value = false
+  lbOrigin.value = '50% 50%'
+  lbMoved = false
+  lbAxis = null
+  lbClickLock = false
+}
+function toggleZoom (e?: MouseEvent) {
+  if (lbZoom.value) {
+    lbZoom.value = false
+    lbX.value = 0
+    lbY.value = 0
+    return
+  }
+  if (e && e.currentTarget instanceof HTMLElement) {
+    const r = e.currentTarget.getBoundingClientRect()
+    const x = ((e.clientX - r.left) / r.width) * 100
+    const y = ((e.clientY - r.top) / r.height) * 100
+    lbOrigin.value = `${Math.min(100, Math.max(0, x))}% ${Math.min(100, Math.max(0, y))}%`
+  }
+  lbX.value = 0
+  lbY.value = 0
+  lbZoom.value = true
+}
+function onLbBackdrop () {
+  if (lbMoved || lbClickLock || lbZoom.value) return
+  closeLightbox()
+}
+function onLbTouchStart (e: TouchEvent) {
+  if (e.touches.length !== 1) return
+  lbDragging.value = true
+  lbMoved = false
+  lbAxis = null
+  lbStartX = e.touches[0].clientX
+  lbStartY = e.touches[0].clientY
+  lbPanX = lbX.value
+  lbPanY = lbY.value
+  if (!lbZoom.value) {
+    lbX.value = 0
+    lbY.value = 0
+  }
+}
+function onLbTouchMove (e: TouchEvent) {
+  if (!lbDragging.value || e.touches.length !== 1) return
+  const dx = e.touches[0].clientX - lbStartX
+  const dy = e.touches[0].clientY - lbStartY
+
+  // zoomed in: one finger pans the photo
+  if (lbZoom.value) {
+    if (Math.abs(dx) > 6 || Math.abs(dy) > 6) { lbMoved = true; lbClickLock = true }
+    lbX.value = lbPanX + dx
+    lbY.value = lbPanY + dy
+    e.preventDefault()
+    return
+  }
+
+  if (!lbAxis) {
+    if (Math.abs(dx) < 10 && Math.abs(dy) < 10) return
+    lbAxis = Math.abs(dx) > Math.abs(dy) ? 'x' : 'y'
+    lbMoved = true
+    lbClickLock = true
+  }
+  if (lbAxis === 'x' && lightboxImgs.value.length > 1) {
+    lbX.value = dx
+    lbY.value = 0
+    e.preventDefault()
+  } else if (lbAxis === 'y' && dy > 0) {
+    lbY.value = dy
+    lbX.value = 0
+    e.preventDefault()
+  }
+}
+function onLbTouchEnd () {
+  if (!lbDragging.value) return
+  const dx = lbX.value
+  const dy = lbY.value
+  lbDragging.value = false
+
+  if (lbZoom.value) {
+    window.setTimeout(() => { lbClickLock = false; lbMoved = false }, 200)
+    return
+  }
+  if (lbAxis === 'y' && dy > 90) {
+    closeLightbox()
+    return
+  }
+  if (lbAxis === 'x' && Math.abs(dx) > 50 && lightboxImgs.value.length > 1) {
+    stepImg(dx < 0 ? 1 : -1)
+    return
+  }
+  lbX.value = 0
+  lbY.value = 0
+  lbAxis = null
+  window.setTimeout(() => { lbClickLock = false; lbMoved = false }, 280)
 }
 
 watch(lightbox, (open) => {
   if (process.client) document.body.style.overflow = open ? 'hidden' : ''
 })
+watch(lightboxIndex, async () => {
+  await nextTick()
+  const el = lbThumbsEl.value?.querySelector<HTMLElement>('[data-on="1"]')
+  el?.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' })
+})
 function onKey (e: KeyboardEvent) {
   if (!lightbox.value) return
-  if (e.key === 'Escape') lightbox.value = false
-  else if (e.key === 'ArrowRight') stepImg(1)
+  if (e.key === 'Escape') {
+    if (lbZoom.value) { toggleZoom(); return }
+    closeLightbox()
+  } else if (e.key === 'ArrowRight') stepImg(1)
   else if (e.key === 'ArrowLeft') stepImg(-1)
 }
-onMounted(() => process.client && window.addEventListener('keydown', onKey))
 onBeforeUnmount(() => {
   if (process.client) {
     window.removeEventListener('keydown', onKey)
@@ -497,7 +846,28 @@ const iconD = computed(() => getIcon(service.value?.icon))
   aspect-ratio: 4 / 3;
   box-shadow: 0 30px 60px -30px rgb(0 0 0 / 0.85);
 }
-.sheet-plate :deep(img) { width: 100%; height: 100%; object-fit: cover; display: block; }
+.img-zoom { position: relative; }
+.sheet-plate :deep(img),
+.img-zoom img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.sheet-count {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: #f4f1ea;
+  background: rgb(0 0 0 / 0.5);
+  backdrop-filter: blur(6px);
+}
 .sheet-blank {
   height: 100%;
   display: flex;
@@ -578,6 +948,209 @@ const iconD = computed(() => getIcon(service.value?.icon))
   background: rgb(255 255 255 / 0.02);
 }
 .step-n { font-size: 11px; letter-spacing: 0.16em; opacity: 0.45; padding-top: 3px; }
+
+/* ══ SAMPLE GALLERY ══════════════════════════════════════════ */
+.gal-head {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  margin-bottom: 18px;
+  flex-wrap: wrap;
+}
+.gal-head-title { flex: 1 1 220px; min-width: 0; }
+
+.gal-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 16px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.12);
+  background: rgb(255 255 255 / 0.03);
+  color: #f4f1ea;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: border-color 0.22s ease, background 0.22s ease, color 0.22s ease;
+}
+.gal-all svg { width: 15px; height: 15px; color: var(--accent, #3b82f6); }
+.gal-all:hover {
+  border-color: var(--accent-line, rgb(255 255 255 / 0.3));
+  background: var(--accent-soft, rgb(255 255 255 / 0.06));
+}
+
+/* two columns on phones, a lead sheet plus a run of four on desktop */
+.gal {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.gal[data-feature='1'] > .gal-item:first-child {
+  grid-column: span 2;
+  aspect-ratio: 16 / 10;
+}
+@media (min-width: 768px) {
+  .gal { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+  .gal[data-feature='1'] > .gal-item:first-child {
+    grid-column: span 2;
+    grid-row: span 2;
+    aspect-ratio: 1 / 1;
+  }
+}
+
+.gal-item {
+  position: relative;
+  display: block;
+  width: 100%;
+  padding: 0;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  border-radius: 12px;
+  cursor: zoom-in;
+  background: rgb(255 255 255 / 0.03);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  box-shadow: 0 1px 0 rgb(255 255 255 / 0.04) inset;
+  transition:
+    border-color 0.3s ease,
+    box-shadow 0.35s ease,
+    transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gal-item.is-more { cursor: pointer; }
+
+.gal-item img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  opacity: 0;
+  transform: scale(1.02);
+  transition:
+    opacity 0.5s ease,
+    transform 0.8s cubic-bezier(0.22, 1, 0.36, 1),
+    filter 0.4s ease;
+}
+.gal-item img.ready { opacity: 1; }
+
+/* placeholder while the photo loads — no layout jump, no empty black box */
+.gal-skel {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(100deg, transparent 20%, rgb(255 255 255 / 0.07) 45%, transparent 70%),
+    rgb(255 255 255 / 0.035);
+  background-size: 220% 100%, auto;
+  animation: skelSweep 1.5s linear infinite;
+}
+@keyframes skelSweep {
+  from { background-position: 140% 0, 0 0; }
+  to   { background-position: -60% 0, 0 0; }
+}
+
+.gal-veil {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgb(0 0 0 / 0.28) 0%,
+    transparent 30%,
+    transparent 52%,
+    rgb(0 0 0 / 0.72) 100%
+  );
+  opacity: 0.85;
+  transition: opacity 0.35s ease;
+}
+
+/* label sits low-left so it reads as a caption, not a badge */
+.gal-no {
+  position: absolute;
+  left: 12px;
+  bottom: 11px;
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(244 241 234 / 0.82);
+  text-shadow: 0 1px 8px rgb(0 0 0 / 0.7);
+  pointer-events: none;
+}
+
+.gal-open {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  color: #f4f1ea;
+  background: rgb(0 0 0 / 0.42);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  transform: translateY(-4px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.gal-open svg { width: 14px; height: 14px; }
+
+/* the "+N" tile: same frame, quieter photo, one clear number */
+.gal-more {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  background: rgb(8 10 14 / 0.62);
+  backdrop-filter: blur(2px);
+  color: #f4f1ea;
+  pointer-events: none;
+  transition: background 0.3s ease;
+}
+.gal-more em { font-style: normal; font-size: clamp(1.5rem, 4vw, 2rem); line-height: 1; }
+.gal-more small {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  opacity: 0.7;
+}
+
+@media (hover: hover) {
+  .gal-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent-line, rgb(255 255 255 / 0.25));
+    box-shadow: 0 26px 48px -28px rgb(0 0 0 / 0.95);
+  }
+  .gal-item:hover img { transform: scale(1.06); }
+  .gal-item:hover .gal-veil { opacity: 1; }
+  .gal-item:hover .gal-open { opacity: 1; transform: none; }
+  .gal-item.is-more:hover .gal-more { background: rgb(8 10 14 / 0.5); }
+}
+.gal-item:focus-visible img { transform: scale(1.04); }
+.gal-item:focus-visible .gal-open { opacity: 1; transform: none; }
+
+/* touch: nothing hides behind a hover state */
+@media (hover: none) {
+  .gal-open { opacity: 1; transform: none; }
+}
+
+.gal-less {
+  display: block;
+  margin: 14px auto 0;
+  padding: 9px 18px;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.1);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(244 241 234 / 0.7);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.gal-less:hover { color: #f4f1ea; border-color: rgb(255 255 255 / 0.25); }
 
 /* ── job ticket ── */
 .docket {
@@ -685,12 +1258,212 @@ const iconD = computed(() => getIcon(service.value?.icon))
 }
 @media (prefers-reduced-motion: reduce) {
   .lift { animation: none; }
+  .gal-skel { animation: none; }
   .rel-card:hover { transform: none; }
+  .gal-item:hover { transform: none; }
+  .gal-item img,
+  .gal-item:hover img { transform: none; }
   *, *::before, *::after { transition-duration: 0.01ms !important; }
 }
 @media (max-width: 640px) {
   .sheet { padding: 16px; }
   .docket-rows > div { flex-direction: column; align-items: flex-start; gap: 4px; }
   .docket-rows dd { text-align: left; }
+}
+
+/* ══ LIGHTBOX (teleported; still scoped via Vue data-v) ══════ */
+.lb {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  background: rgba(6, 8, 12, 0.96);
+  overscroll-behavior: contain;
+  --lb-x: 0px;
+  --lb-y: 0px;
+  --lb-scale: 1;
+  --lb-origin: 50% 50%;
+}
+
+.lb-top {
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: calc(10px + env(safe-area-inset-top, 0px)) 14px 10px;
+}
+.lb-title { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.lb-title strong {
+  font-size: 14px;
+  color: #f4f1ea;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.lb-title span {
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgb(244 241 234 / 0.55);
+}
+.lb-tools { margin-left: auto; display: flex; align-items: center; gap: 8px; }
+.lb-tool {
+  width: 42px;
+  height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #f4f1ea;
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+.lb-tool svg { width: 19px; height: 19px; }
+.lb-tool:hover { background: rgb(255 255 255 / 0.16); }
+.lb-ask { width: auto; padding: 0 16px; gap: 9px; }
+.lb-ask svg { width: 15px; height: 15px; }
+.lb-ask em { font-style: normal; font-size: 13px; font-weight: 600; }
+@media (max-width: 639px) {
+  .lb-ask em { display: none; }
+  .lb-ask { width: 42px; padding: 0; }
+}
+
+.lb-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  cursor: zoom-out;
+  touch-action: none;
+  overflow: hidden;
+}
+/* contain, not cover: a printed sample is judged on the whole sheet */
+.lb-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 6px;
+  user-select: none;
+  cursor: zoom-in;
+  -webkit-user-drag: none;
+  -webkit-touch-callout: none;
+  transform: translate(var(--lb-x), var(--lb-y)) scale(var(--lb-scale));
+  transform-origin: var(--lb-origin);
+  transition: transform 0.24s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.lb-swiping .lb-img { transition: none; }
+.lb-zoomed .lb-img { cursor: grab; }
+
+.lb-side {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #f4f1ea;
+  background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: 999px;
+  backdrop-filter: blur(8px);
+  transition: background 0.2s ease;
+}
+.lb-side:hover { background: rgb(255 255 255 / 0.18); }
+.lb-prev { left: 16px; }
+.lb-next { right: 16px; }
+
+.lb-chrome {
+  position: relative;
+  z-index: 3;
+  flex-shrink: 0;
+  padding: 10px 12px calc(12px + env(safe-area-inset-bottom, 0px));
+}
+.lb-dock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  margin-bottom: 10px;
+}
+.lb-nav {
+  width: 52px;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  color: #f4f1ea;
+  background: rgb(255 255 255 / 0.12);
+  border: 1px solid rgb(255 255 255 / 0.14);
+  touch-action: manipulation;
+}
+.lb-nav:active { background: rgb(255 255 255 / 0.2); }
+.lb-count {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  min-width: 88px;
+  font-size: 12px;
+  letter-spacing: 0.14em;
+  color: #f4f1ea;
+}
+.lb-count small {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.55;
+}
+.lb-thumbs {
+  display: flex;
+  justify-content: center;
+  justify-content: safe center;
+  gap: 8px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 2px 4px 4px;
+  touch-action: pan-x;
+}
+.lb-thumbs::-webkit-scrollbar { display: none; }
+.lb-thumbs button {
+  flex: 0 0 auto;
+  width: 56px;
+  height: 56px;
+  border-radius: 9px;
+  overflow: hidden;
+  opacity: 0.4;
+  border: 2px solid transparent;
+  background: rgb(255 255 255 / 0.06);
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+.lb-thumbs button:hover { opacity: 0.8; }
+.lb-thumbs button.on { opacity: 1; border-color: #60a5fa; }
+.lb-thumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+@media (max-width: 639px) {
+  .lb-side { display: none; }
+  .lb-thumbs button { width: 48px; height: 48px; }
+}
+@media (min-width: 640px) {
+  .lb-dock { display: none; }
+  .lb-thumbs { padding-bottom: 6px; }
 }
 </style>
