@@ -15,6 +15,7 @@ export const useApi = () => {
     // Products
     getProducts:      (p?: Record<string, any>) => $get<any>('/products', p),
     getFeatured:      ()              => $get<any[]>('/products/featured'),
+    getPopular:       ()              => $get<any[]>('/products/popular'),
     getProduct:       (slug: string)  => $get<any>(`/products/${slug}`),
 
     // Services

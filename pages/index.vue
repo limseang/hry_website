@@ -127,7 +127,7 @@
       </div>
     </div>
 
-    <!-- ══ FEATURED PRODUCTS ════════════════════════════════════════ -->
+    <!-- ══ POPULAR PRODUCTS ════════════════════════════════════════ -->
     <section class="py-24 lg:py-32">
       <div class="wrap">
         <div class="flex items-end justify-between mb-12 gap-6 flex-wrap">
@@ -144,13 +144,18 @@
           </NuxtLink>
         </div>
 
-        <div v-if="loadingProducts" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <div v-for="i in 4" :key="i" class="skel aspect-[4/5]"/>
+        <div v-if="loadingProducts" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <div v-for="i in 4" :key="i">
+            <div class="skel aspect-[4/3]"/>
+            <div class="bg-ink-800 p-5 space-y-2.5">
+              <div class="skel h-5 w-3/4"/><div class="skel h-3.5 w-full"/><div class="skel h-3.5 w-2/3"/>
+            </div>
+          </div>
         </div>
-        <div v-else-if="products.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-          <UiProductCard v-for="p in products" :key="p.id" :p="p"/>
+        <div v-else-if="products.length" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <UiProductCard v-for="p in products" :key="p.id ?? p.slug" :p="p"/>
         </div>
-        <p v-else class="font-body text-mist text-center py-16">No featured products available yet.</p>
+        <p v-else class="font-body text-mist text-center py-16">No popular products available yet.</p>
       </div>
     </section>
 
@@ -368,7 +373,13 @@ const loadingServices = ref(true)
 
 onMounted(async () => {
   await Promise.allSettled([
-    api.getFeatured().then(r      => { products.value     = r?.data ?? []; loadingProducts.value = false }),
+    api.getPopular()
+      .then((r) => {
+        const list = Array.isArray(r?.data) ? r.data : (r?.data?.data ?? [])
+        products.value = list.filter((x: any) => x && x.slug)
+      })
+      .catch(() => { products.value = [] })
+      .finally(() => { loadingProducts.value = false }),
     api.getServices().then(r      => { services.value     = r?.data ?? []; loadingServices.value = false }),
     api.getTestimonials().then(r  => { testimonials.value = r?.data ?? [] }),
   ])

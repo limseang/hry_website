@@ -18,6 +18,10 @@
         class="absolute top-3 left-3 bg-blue-500 font-mono text-white text-[10px] uppercase tracking-widest px-2.5 py-1">
         ★ Featured
       </span>
+      <span v-else-if="p.is_popular"
+        class="absolute top-3 left-3 bg-blue-500 font-mono text-white text-[10px] uppercase tracking-widest px-2.5 py-1">
+        Popular
+      </span>
       <span v-if="p.category"
         class="absolute top-3 right-3 bg-ink-900/80 backdrop-blur font-mono text-mist text-[10px] uppercase tracking-widest px-2.5 py-1">
         {{ p.category.name }}
