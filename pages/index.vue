@@ -136,7 +136,7 @@
               class="font-display font-900 uppercase text-cream-100 leading-[0.9]
                    text-[clamp(2.5rem,6vw,5.5rem)]"
           >
-            Print services
+            Printing services
           </h2>
           <div class="flex flex-col items-start lg:items-end gap-5">
             <p class="font-body text-mist leading-relaxed max-w-sm lg:text-right">
