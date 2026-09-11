@@ -3,12 +3,14 @@
 
     <!-- ══ HERO — full-bleed team photo ═════════════════════════════ -->
     <section
+        ref="heroEl"
         class="relative isolate overflow-hidden bg-ink-950
              h-[82svh] sm:h-[90svh] min-h-[580px] max-h-[1040px]"
         aria-labelledby="hero-title"
     >
-      <!-- Photo -->
+      <!-- Photo: full cover on desktop, slow left-to-right pan on phones/tablets (see <style>) -->
       <img
+          ref="heroImg"
           :src="bannerSrc"
           alt="The HRY Printing and Embroidery team on the shop floor in Phnom Penh"
           width="1280"
@@ -16,6 +18,8 @@
           fetchpriority="high"
           decoding="async"
           class="hero-img absolute inset-0 -z-10 w-full h-full object-cover object-center"
+          :class="{ 'is-ready': heroReady, 'is-paused': !heroVisible }"
+          @load="heroReady = true"
       />
 
       <!-- Legibility layers: bottom fade for text, light top fade for the meta row -->
@@ -77,7 +81,7 @@
                 <NuxtLink
                     to="/products"
                     class="inline-flex items-center gap-2 px-6 py-3 font-display font-900 uppercase tracking-wide
-                         text-cream-100 border border-white/30 bg-white/[0.04] backdrop-blur-sm
+                         text-cream-100 border border-white/30 bg-ink-950/40 lg:bg-white/[0.04] lg:backdrop-blur-sm
                          hover:bg-white/10 hover:border-white/60 transition-colors duration-200
                          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
                 >
@@ -89,12 +93,12 @@
         </div>
 
         <!-- Trust band -->
-        <div class="border-t border-white/10 bg-ink-950/60 backdrop-blur-md">
+        <div class="border-t border-white/10 bg-ink-950/85 lg:bg-ink-950/60 lg:backdrop-blur-md">
           <dl class="wrap grid grid-cols-4 divide-x divide-white/10">
             <div
                 v-for="t in trust"
                 :key="t.label"
-                class="py-4 sm:py-6 px-2 sm:px-6 lg:px-10 first:pl-0"
+                class="flex flex-col py-4 sm:py-6 px-2 sm:px-6 lg:px-10 first:pl-0"
             >
               <dt class="order-2 font-mono text-[9px] sm:text-[10px] text-mist tracking-[0.2em] uppercase mt-1.5">
                 {{ t.label }}
@@ -467,6 +471,39 @@ useHead({
   script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(faqJsonLd) }],
 })
 
+/* ── Hero pan control ─────────────────────────────────────────────
+   heroReady:   the pan starts only after the photo is fully decoded,
+                so the first frames do not stutter.
+   heroVisible: the pan pauses when the hero is scrolled out of view,
+                so it does not compete with page scrolling.            */
+const heroEl      = ref<HTMLElement | null>(null)
+const heroImg     = ref<HTMLImageElement | null>(null)
+const heroReady   = ref(false)
+const heroVisible = ref(true)
+let heroObserver: IntersectionObserver | null = null
+
+onMounted(() => {
+  const img = heroImg.value
+  if (img?.complete) {
+    // Image may have finished loading before hydration
+    ;(img.decode ? img.decode() : Promise.resolve())
+        .catch(() => {})
+        .finally(() => { heroReady.value = true })
+  }
+
+  if (heroEl.value && 'IntersectionObserver' in window) {
+    heroObserver = new IntersectionObserver(
+        ([entry]) => { heroVisible.value = entry.isIntersecting },
+        { threshold: 0.05 },
+    )
+    heroObserver.observe(heroEl.value)
+  }
+})
+
+onBeforeUnmount(() => {
+  heroObserver?.disconnect()
+})
+
 const api = useApi()
 
 const products        = ref<any[]>([])
@@ -528,6 +565,61 @@ const features = [
 @keyframes hero-settle {
   from { transform: scale(1.08); opacity: 0.4; }
   to   { transform: scale(1);    opacity: 1; }
+}
+
+/*
+  Phones and tablets: the hero is taller than the 16:9 photo, so object-cover
+  cuts off the left and right sides. Instead, show the photo at full height
+  with its natural width and pan it slowly from the left edge to the right
+  edge and back, so the whole team is visible.
+
+  translateX(calc(-100% + 100vw)) moves the image exactly far enough for its
+  right edge to meet the right edge of the screen. If the screen is already
+  wider than the photo (landscape phone), min-width keeps it covering and the
+  pan distance becomes 0, so it simply stays still.
+*/
+@media (max-width: 1023px) and (prefers-reduced-motion: no-preference) {
+  .hero-img {
+    width: auto;
+    min-width: 100%;
+    max-width: none;
+    height: 100%;
+    right: auto;
+    left: 0;
+    object-fit: cover;
+    /* Own GPU layer: the browser moves a finished bitmap instead of repainting */
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    will-change: transform;
+    animation: hero-fade 1.2s ease-out both;
+  }
+
+  /* Pan starts only once the photo is decoded (class set in script) */
+  .hero-img.is-ready {
+    animation:
+        hero-fade 1.2s ease-out both,
+        hero-pan 16s cubic-bezier(0.45, 0, 0.55, 1) 0.6s infinite alternate;
+  }
+
+  /* Paused while the hero is scrolled out of view */
+  .hero-img.is-paused {
+    animation-play-state: paused;
+  }
+}
+
+@keyframes hero-fade {
+  from { opacity: 0.3; }
+  to   { opacity: 1; }
+}
+
+/*
+  One continuous move from left edge to right edge. "alternate" plays it
+  back the other way, and the sine-shaped easing slows down gently at each
+  end, so there are no hard stops or sudden starts.
+*/
+@keyframes hero-pan {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(calc(-100% + 100vw), 0, 0); }
 }
 
 .hero-rise {
