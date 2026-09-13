@@ -68,11 +68,11 @@ export default defineNuxtConfig({
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
         {
           name: 'description',
-          content: 'HRY Printing is a leading printing company in Cambodia. Premium printing services in Phnom Penh — t-shirts, uniforms, business cards, banners, stickers, packaging, silk screen, DTF, sublimation & embroidery. Get a quote today.',
+          content: 'HRY Printing is a leading printing company in Cambodia. Premium printing services in Phnom Penh — t-shirts, uniforms, business cards, banners, stickers, packaging, silk screen, DTF, sublimation & embroidery. HRY Printing ជាក្រុមហ៊ុនបោះពុម្ពឈានមុខគេនៅភ្នំពេញ កម្ពុជា។ Get a quote today.',
         },
         {
           name: 'keywords',
-          content: 'printing in Cambodia, best printing in Cambodia, printing Phnom Penh, HRY, HRY Printing, printing company Cambodia, t-shirt printing Cambodia, uniform printing, silk screen printing Cambodia, DTF printing, sublimation printing, embroidery, business cards Cambodia, banner printing Phnom Penh',
+          content: 'printing in Cambodia, best printing in Cambodia, printing Phnom Penh, HRY, HRY Printing, printing company Cambodia, t-shirt printing Cambodia, uniform printing, silk screen printing Cambodia, DTF printing, sublimation printing, embroidery, business cards Cambodia, banner printing Phnom Penh, បោះពុម្ពនៅភ្នំពេញ, បោះពុម្ពនៅកម្ពុជា, ក្រុមហ៊ុនបោះពុម្ព ភ្នំពេញ, បោះពុម្ពអាវយឺត, កាតអាជីវកម្ម, បដា ភ្នំពេញ, ស្ទីគ័រ, ដេរសំលៀកបីម៉ាស៊ីន, បោះពុម្ពសូត្រស្គ្រីន, បោះពុម្ព DTF, សម្ភារៈវេចខ្ចប់',
         },
         { name: 'author', content: 'HRY Printing' },
         { name: 'robots', content: 'index, follow, max-image-preview:large' },
@@ -85,16 +85,17 @@ export default defineNuxtConfig({
 
         // Open Graph
         { property: 'og:site_name',   content: 'HRY Printing' },
-        { property: 'og:title',       content: 'HRY Printing – Best Printing Services in Cambodia' },
-        { property: 'og:description', content: 'Premium printing services in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more. Get a quote from HRY today.' },
+        { property: 'og:title',       content: 'HRY Printing – Best Printing Services in Cambodia | បោះពុម្ពនៅភ្នំពេញ' },
+        { property: 'og:description', content: 'Premium printing services in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more. សេវាកម្មបោះពុម្ពគុណភាពខ្ពស់នៅភ្នំពេញ កម្ពុជា។ Get a quote from HRY today.' },
         { property: 'og:type',        content: 'website' },
         { property: 'og:locale',      content: 'en_US' },
+        { property: 'og:locale:alternate', content: 'km_KH' },
         { property: 'og:image',       content: `${SITE_URL}/favicon.png` },
 
         // Twitter / X card
         { name: 'twitter:card',        content: 'summary_large_image' },
-        { name: 'twitter:title',       content: 'HRY Printing – Best Printing Services in Cambodia' },
-        { name: 'twitter:description', content: 'Premium printing services in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more.' },
+        { name: 'twitter:title',       content: 'HRY Printing – Best Printing Services in Cambodia | បោះពុម្ពនៅភ្នំពេញ' },
+        { name: 'twitter:description', content: 'Premium printing services in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more. សេវាកម្មបោះពុម្ពគុណភាពខ្ពស់នៅភ្នំពេញ កម្ពុជា។' },
         { name: 'twitter:image',       content: `${SITE_URL}/favicon.png` },
 
         { name: 'theme-color', content: '#0a0a0a' },

@@ -51,21 +51,30 @@
       <div class="relative z-10 h-full flex flex-col justify-end">
         <div class="wrap pb-8 sm:pb-12 lg:pb-16">
           <div class="grid lg:grid-cols-[1.25fr_0.75fr] gap-7 lg:gap-16 items-end">
+
+            <!-- Headline column -->
             <div class="hero-rise">
-              <p class="font-body text-cream-100/80 text-sm sm:text-base mb-4">
+              <p
+                  class="font-body text-cream-100/80 text-sm sm:text-base mb-4 hero-text-soft"
+              >
                 Printing in Phnom Penh, Cambodia
               </p>
               <h1
                   id="hero-title"
                   class="font-display font-900 uppercase leading-[0.86] tracking-tight text-cream-100
-                       text-[clamp(3rem,9vw,8rem)]"
+                       text-[clamp(3rem,9vw,8rem)]
+                       hero-text-soft"
               >
                 From design<br/>to reality
               </h1>
             </div>
 
+            <!-- Actions column -->
             <div class="hero-rise [animation-delay:.15s]">
-              <p class="hidden sm:block font-body text-cream-100/75 text-lg leading-relaxed max-w-[440px] mb-8">
+              <p
+                  class="hidden sm:block font-body text-cream-100/85 text-base lg:text-lg leading-relaxed
+                       max-w-[440px] mb-6 lg:mb-7 hero-text-soft"
+              >
                 Business cards, building-scale banners, t-shirts, uniforms and packaging,
                 printed in our own shop in Phnom Penh.
               </p>
@@ -81,8 +90,8 @@
                 <NuxtLink
                     to="/products"
                     class="inline-flex items-center gap-2 px-6 py-3 font-display font-900 uppercase tracking-wide
-                         text-cream-100 border border-white/30 bg-ink-950/40 lg:bg-white/[0.04] lg:backdrop-blur-sm
-                         hover:bg-white/10 hover:border-white/60 transition-colors duration-200
+                         text-cream-100 border border-white/25 hover:bg-white/10 hover:border-white/60
+                         transition-all duration-300
                          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
                 >
                   Browse catalogue
@@ -378,6 +387,148 @@
     </section>
 
 
+    <!-- ══ KHMER SEO CONTENT (visible & indexable) ═════════════════════ -->
+    <section
+        class="relative py-20 lg:py-28 bg-ink-900 border-t border-white/[0.06]"
+        aria-labelledby="khmer-seo-title"
+        lang="km"
+    >
+      <div class="wrap">
+        <div class="lbl mb-6">អំពីក្រុមហ៊ុន / About Us</div>
+
+        <div class="grid lg:grid-cols-[1.05fr_0.95fr] gap-12 lg:gap-20 mb-14">
+          <!-- Khmer intro paragraphs -->
+          <div>
+            <h2
+                id="khmer-seo-title"
+                class="font-display font-900 uppercase text-cream-100 leading-[0.95]
+                     text-[clamp(2.25rem,5vw,4.25rem)] mb-7"
+            >
+              ក្រុមហ៊ុនបោះពុម្ព<br/>
+              <span class="text-blue-500">HRY Printing នៅភ្នំពេញ</span>
+            </h2>
+
+            <div class="space-y-5 max-w-[580px] font-body text-mist leading-[1.8] text-[15px] sm:text-base">
+              <p>
+                HRY Printing គឺជាក្រុមហ៊ុនបោះពុម្ពឈានមុខគេមួយនៅក្នុងប្រទេសកម្ពុជា។
+                យើងបានផ្តល់សេវាកម្មបោះពុម្ពប្រកបដោយគុណភាពខ្ពស់អស់រយៈពេលជាង ១៥ ឆ្នាំមកហើយ ចាប់តាំងពីឆ្នាំ ២០០៩។
+                ក្រុមហ៊ុនរបស់យើងបានបម្រើអតិថិជនជាង ១៥ ០០០ នាក់ទូទាំងប្រទេសកម្ពុជា
+                ជាមួយនឹងសេវាកម្មបោះពុម្ពដែលមានតម្លៃសមរម្យ និងរហ័សទាន់ចិត្ត។
+              </p>
+              <p>
+                យើងមានជំនាញក្នុងការបោះពុម្ពគ្រប់ប្រភេទ រួមទាំងការបោះពុម្ពសូត្រស្គ្រីន (silk screen)
+                ការបោះពុម្ព DTF ការបោះពុម្ព sublimation ការដេរសំលៀកបីម៉ាស៊ីន (embroidery)
+                ការបោះពុម្ពអាវយឺត ឯកសណ្ឋានការងារ និងស្រលៀកបំពាក់ កាតអាជីវកម្ម បដា ផ្លាកសញ្ញា ស្ទីគ័រ
+                និងសម្ភារៈវេចខ្ចប់ផ្សេងៗ។
+                យើងប្រើប្រាស់ម៉ាស៊ីនបោះពុម្ពទំនើបៗ និងសម្ភារៈដែលមានគុណភាពខ្ពស់
+                ដើម្បីផ្តល់ជូននូវផលិតផលបោះពុម្ពដែលមានស្តង់ដារខ្ពស់បំផុតនៅកម្ពុជា។
+              </p>
+              <p>
+                ទីតាំងរបស់យើងស្ថិតនៅអាសយដ្ឋាន ផ្ទះលេខ #៣៣៩-៣៤០ ផ្លូវលេខ ១៩ បុរីឡាយគង់
+                ក្នុងរាជធានីភ្នំពេញ។ អតិថិជនអាចទំនាក់ទំនងមកយើងតាមរយៈ Telegram @Hryprintingshop
+                ទូរស័ព្ទលេខ ០១០ ៨៧១ ០១១ ឬអ៊ីមែវ hrkhfilm@gmail.com។
+                យើងបើកទ្វារចាប់ពីម៉ោង ៨ ព្រឹកដល់ម៉ោង ៦ ល្ងាច ថ្ងៃច័ន្ទដល់ថ្ងៃសុក្រ
+                និងពីម៉ោង ៩ ព្រឹកដល់ម៉ោង ៣ រសៀល នៅថ្ងៃសៅរ៍។
+              </p>
+              <p>
+                HRY Printing ធានានូវភាពពេញចិត្តរបស់អតិថិជនជាមួយនឹងតម្លៃសមរម្យ គុណភាពខ្ពស់
+                និងសេវាកម្មរហ័សទាន់ចិត្ត។
+                យើងផ្តល់ជូននូវការដកស្រង់តម្លៃដោយឥតគិតថ្លៃ ជាមួយនឹងការបញ្ជាក់តម្លៃច្បាស់លាស់។
+                ក្រុមការងាររបស់យើងមានបទពិសោធន៍ខ្ពស់ និងតែងតែធ្វើការយ៉ាងយកចិត្តទុកដាក់
+                លើគម្រោងបោះពុម្ពរៀងរាល់ថ្ងៃ។ មិនថាអ្នកត្រូវការបោះពុម្ពកាតអាជីវកម្ម បដាធំៗ
+                ឬឯកសណ្ឋានកម្មករនោះទេ យើងមានដំណោះស្រាយសមរម្យសម្រាប់អ្នក។
+              </p>
+            </div>
+
+            <div class="mt-9 flex flex-wrap gap-3">
+              <a
+                  href="https://t.me/Hryprintingshop"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="btn-primary"
+              >
+                ទំនាក់ទំនងយើងឥឡូវនេះ
+              </a>
+              <NuxtLink to="/services" class="btn-outline btn-sm">
+                មើលសេវាកម្មទាំងអស់
+              </NuxtLink>
+            </div>
+          </div>
+
+          <!-- Khmer service list -->
+          <div>
+            <h3 class="font-display font-900 uppercase text-cream-100 leading-none
+                        text-2xl lg:text-3xl mb-2 pb-4 border-b border-white/[0.08]">
+              សេវាកម្មបោះពុម្ពរបស់យើង
+            </h3>
+            <p class="font-mono text-[10px] text-mist uppercase tracking-[0.22em] mb-6">
+              Our Printing Services
+            </p>
+            <ul class="space-y-0">
+              <li
+                  v-for="s in khmerServices"
+                  :key="s.km"
+                  class="flex items-start gap-4 py-3.5 border-b border-white/[0.06] last:border-b-0"
+              >
+                <span class="w-9 h-9 bg-blue-500/10 border border-blue-500/15
+                             flex items-center justify-center shrink-0 mt-0.5">
+                  <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor"
+                       viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" :d="s.icon"/>
+                  </svg>
+                </span>
+                <div>
+                  <div class="font-body text-cream-100 text-base sm:text-[17px] mb-0.5"
+                       style="line-height:1.55">{{ s.km }}</div>
+                  <div class="font-mono text-[10px] text-mist uppercase tracking-wider">
+                    {{ s.en }}
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Bottom info row: address / contact / hours (Khmer) -->
+        <div class="border-t border-white/[0.08] pt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div>
+            <div class="font-mono text-[10px] text-mist uppercase tracking-[0.22em] mb-3">
+              អាសយដ្ឋាន <span class="opacity-50">/ Address</span>
+            </div>
+            <p class="font-body text-cream-100 text-sm leading-[1.75]" style="line-height:1.85">
+              ផ្ទះលេខ #៣៣៩-៣៤០ ផ្លូវលេខ ១៩<br/>
+              បុរីឡាយគង់ ភ្នំពេញ កម្ពុជា
+            </p>
+          </div>
+          <div>
+            <div class="font-mono text-[10px] text-mist uppercase tracking-[0.22em] mb-3">
+              ទំនាក់ទំនង <span class="opacity-50">/ Contact</span>
+            </div>
+            <p class="font-body text-cream-100 text-sm leading-[1.85]">
+              ទូរស័ព្ទ:
+              <a href="tel:85510871011" class="text-blue-400 hover:underline">០១០ ៨៧១ ០១១</a><br/>
+              Telegram:
+              <a href="https://t.me/Hryprintingshop" target="_blank" rel="noopener noreferrer"
+                 class="text-blue-400 hover:underline">@Hryprintingshop</a><br/>
+              អ៊ីមែវ:
+              <a href="mailto:hrkhfilm@gmail.com" class="text-blue-400 hover:underline">hrkhfilm@gmail.com</a>
+            </p>
+          </div>
+          <div>
+            <div class="font-mono text-[10px] text-mist uppercase tracking-[0.22em] mb-3">
+              ម៉ោងធ្វើការ <span class="opacity-50">/ Working Hours</span>
+            </div>
+            <p class="font-body text-cream-100 text-sm leading-[1.85]">
+              ច័ន្ទ – សុក្រ: ០៨:០០ – ១៨:០០<br/>
+              សៅរ៍: ០៩:០០ – ១៥:០០<br/>
+              អាទិត្យ: <span class="text-mist">បិទទ្វារ</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
     <!-- ══ CTA ═══════════════════════════════════════════════════════ -->
     <section class="relative py-24 lg:py-40 overflow-hidden bg-blue-500" aria-labelledby="cta-title">
       <div aria-hidden="true" class="absolute inset-0 flex items-center justify-center overflow-hidden pointer-events-none">
@@ -427,11 +578,20 @@
 import bannerSrc from '~/assets/image/banner.png'
 
 useSeoMeta({
-  title: 'Printing in Phnom Penh, Cambodia | HRY Printing – Best Printing Service',
-  description: 'HRY Printing is the best printing company for printing in Phnom Penh, Cambodia. T-shirt printing, uniforms, business cards, banners, stickers, packaging, silk screen, DTF, sublimation & embroidery. Get a free quote today.',
-  ogTitle: 'Printing in Phnom Penh, Cambodia – HRY Printing',
-  ogDescription: 'The best printing in Phnom Penh, Cambodia. T-shirts, uniforms, business cards, banners, packaging & more. Get a free quote from HRY Printing today.',
+  title: 'Printing in Phnom Penh, Cambodia | បោះពុម្ពនៅភ្នំពេញ – HRY Printing',
+  description: 'HRY Printing is the best printing company in Phnom Penh, Cambodia. T-shirt printing, uniforms, business cards, banners, stickers, packaging, silk screen, DTF, sublimation & embroidery. HRY Printing គឺជាក្រុមហ៊ុនបោះពុម្ពល្អបំផុតនៅភ្នំពេញ កម្ពុជា។ បោះពុម្ពអាវយឺត ឯកសណ្ឋាន កាតអាជីវកម្ម បដា ស្ទីគ័រ និងសម្ភារៈវេចខ្ចប់។',
+  keywords: 'printing Phnom Penh, បោះពុម្ពនៅភ្នំពេញ, printing Cambodia, បោះពុម្ពនៅកម្ពុជា, best printing Phnom Penh, ក្រុមហ៊ុនបោះពុម្ព ភ្នំពេញ, t-shirt printing Cambodia, បោះពុម្ពអាវយឺត កម្ពុជា, uniform printing, បោះពុម្ពឯកសណ្ឋាន, silk screen printing, បោះពុម្ពសូត្រស្គ្រីន, DTF printing, sublimation Cambodia, ដេរសំលៀកបីម៉ាស៊ីន, embroidery, business cards Phnom Penh, កាតអាជីវកម្ម ភ្នំពេញ, banner printing, បដា ភ្នំពេញ, sticker printing, ស្ទីគ័រ, large format printing, បោះពុម្ពទំហំធំ, packaging printing, សម្ភារៈវេចខ្ចប់, HRY Printing, បោះពុម្ពកម្ពុជា',
+  ogTitle: 'HRY Printing – បោះពុម្ពនៅភ្នំពេញ | Best Printing in Cambodia',
+  ogDescription: 'The best printing company in Phnom Penh, Cambodia. ក្រុមហ៊ុនបោះពុម្ពល្អបំផុតនៅភ្នំពេញ។ T-shirts, uniforms, business cards, banners, packaging & more.',
   ogImage: bannerSrc,
+  ogLocale: 'en_US',
+})
+
+// Add a second locale alternate for Open Graph so Khmer readers see it in shares
+useHead({
+  meta: [
+    { property: 'og:locale:alternate', content: 'km_KH' },
+  ],
 })
 
 const faqs = [
@@ -467,8 +627,67 @@ const faqJsonLd = {
   })),
 }
 
+const localBusinessJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'LocalBusiness',
+  '@id': 'https://hryprinting.com/#organization',
+  name: 'HRY Printing',
+  alternateName: 'HRY Printing ភ្នំពេញ',
+  description: 'Best printing company in Phnom Penh, Cambodia. ក្រុមហ៊ុនបោះពុម្ពល្អបំផុតនៅភ្នំពេញ កម្ពុជា។ Silk screen, DTF, sublimation, embroidery, t-shirt printing, uniforms, business cards, banners, stickers, packaging & large format printing.',
+  url: 'https://hryprinting.com',
+  telephone: '+85510871011',
+  email: 'hrkhfilm@gmail.com',
+  foundingDate: '2009',
+  image: 'https://hryprinting.com/favicon.png',
+  priceRange: '$$',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: '#339-340, Street 19, Borey Laykong',
+    addressLocality: 'Phnom Penh',
+    addressRegion: 'Phnom Penh',
+    addressCountry: 'KH',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: 11.5564,
+    longitude: 104.9282,
+  },
+  openingHoursSpecification: [
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
+      opens: '08:00',
+      closes: '18:00',
+    },
+    {
+      '@type': 'OpeningHoursSpecification',
+      dayOfWeek: 'Saturday',
+      opens: '09:00',
+      closes: '15:00',
+    },
+  ],
+  sameAs: ['https://t.me/Hryprintingshop'],
+  areaServed: [
+    { '@type': 'City',       name: 'Phnom Penh' },
+    { '@type': 'Country',    name: 'Cambodia' },
+    { '@type': 'AdministrativeArea', name: 'ភ្នំពេញ' },
+  ],
+  knowsAbout: [
+    'Silk Screen Printing', 'DTF Printing', 'Sublimation Printing', 'Embroidery',
+    'T-shirt Printing', 'Business Card Printing', 'Banner Printing',
+    'Sticker Printing', 'Packaging Printing', 'Large Format Printing',
+    // Khmer keywords for entity understanding
+    'បោះពុម្ពសូត្រស្គ្រីន', 'បោះពុម្ព DTF', 'បោះពុម្ព sublimation',
+    'ដេរសំលៀកបីម៉ាស៊ីន', 'បោះពុម្ពអាវយឺត', 'កាតអាជីវកម្ម',
+    'បដា ភ្នំពេញ', 'ស្ទីគ័រ', 'សម្ភារៈវេចខ្ចប់',
+  ],
+}
+
 useHead({
-  script: [{ type: 'application/ld+json', innerHTML: JSON.stringify(faqJsonLd) }],
+  script: [
+    { type: 'application/ld+json', innerHTML: JSON.stringify(faqJsonLd) },
+    { type: 'application/ld+json', innerHTML: JSON.stringify(localBusinessJsonLd) },
+  ],
 })
 
 /* ── Hero pan control ─────────────────────────────────────────────
@@ -543,7 +762,7 @@ function scrollToServices() {
 
 const trust = [
   { value: '15+', label: 'Years'     },
-  { value: '5K+', label: 'Clients'   },
+  { value: '15K+', label: 'Clients'   },
   { value: '50+', label: 'Products'  },
   { value: '24H', label: 'Rush jobs' },
 ]
@@ -553,6 +772,22 @@ const features = [
   { title: 'Fast turnaround',   desc: 'Same-day and rush orders available when your deadline is tight.', icon: 'M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z' },
   { title: 'In-house design',   desc: 'Our designers prepare your artwork so it prints correctly.',      icon: 'M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z' },
   { title: 'Clear pricing',     desc: 'Volume discounts and a full price breakdown before you order.',   icon: 'M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z' },
+]
+
+/*
+  Service list shown in the Khmer SEO section. Each entry has a Khmer label
+  (primary) and an English subtitle so the same component works for both
+  languages and bilingual readers searching in either language.
+*/
+const khmerServices = [
+  { km: 'បោះពុម្ពអាវយឺត និងឯកសណ្ឋាន',     en: 'T-shirt & Uniform Printing',      icon: 'M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z' },
+  { km: 'កាតអាជីវកម្ម និងប័រណាវីរសេ',    en: 'Business Cards & Brochures',     icon: 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z' },
+  { km: 'បដា និងផ្លាកសញ្ញាធំៗ',           en: 'Banners & Signs',                icon: 'M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z' },
+  { km: 'ផ្លាកស្ទីកែរ និងស្លាកសញ្ញា',       en: 'Stickers & Labels',              icon: 'M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z' },
+  { km: 'ការវេចខ្ចប់ និងប្រអប់',         en: 'Packaging & Boxes',              icon: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4' },
+  { km: 'សូត្រស្គ្រីន / DTF / Sublimation', en: 'Silk Screen / DTF / Sublimation', icon: 'M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-1.657 1.657' },
+  { km: 'ដេរសំលៀកបីម៉ាស៊ីន',              en: 'Embroidery',                     icon: 'M3 12h18M3 6h18M3 18h18M9 6v12M15 6v12' },
+  { km: 'បោះពុម្ពទំហំធំ',                 en: 'Large Format Printing',          icon: 'M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6z' },
 ]
 </script>
 
@@ -565,6 +800,22 @@ const features = [
 @keyframes hero-settle {
   from { transform: scale(1.08); opacity: 0.4; }
   to   { transform: scale(1);    opacity: 1; }
+}
+
+/*
+  Soft blur / bloom on hero text.
+  Layered text-shadows at increasing radii simulate a gentle glow that
+  makes the letters feel slightly soft and out-of-focus, like a premium
+  matte print — without sacrificing readability.
+*/
+.hero-text-soft {
+  text-shadow:
+      0 0 0.6px rgba(255, 255, 255, 0.35),
+      0 1px 2px  rgba(0, 0, 0, 0.45),
+      0 2px 8px  rgba(0, 0, 0, 0.35),
+      0 6px 24px rgba(0, 0, 0, 0.30);
+  filter: blur(0.35px);
+  -webkit-filter: blur(0.35px);
 }
 
 /*
@@ -659,5 +910,27 @@ const features = [
   .scroll-line::after {
     animation: none;
   }
+}
+
+/*
+  Khmer script has subscript consonants (coeng marks) that need extra line
+  height to stay readable. Without this, multi-line Khmer text looks cramped
+  and accents clip. The rule is scoped to [lang="km"] so it never leaks into
+  English / Latin typography.
+*/
+[lang="km"] {
+  line-height: 1.85;
+}
+[lang="km"] p {
+  /* Slightly looser line-height for paragraphs of Khmer body copy */
+  line-height: 1.85;
+}
+[lang="km"] p + p {
+  /* A touch of space between Khmer paragraphs for visual rhythm */
+  margin-top: 1.25rem;
+}
+[lang="km"] ul li {
+  /* Khmer service list rows: keep things breathable */
+  line-height: 1.5;
 }
 </style>
