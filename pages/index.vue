@@ -26,8 +26,8 @@
         Legibility layers, kept light. The heavy lifting now happens in the
         local scrim behind the headline, so the photo stays visible elsewhere.
       -->
-      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/60 via-transparent to-ink-950/40"/>
-      <div class="absolute inset-0 -z-10 hidden lg:block bg-gradient-to-r from-ink-950/55 via-transparent to-transparent"/>
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/30 via-transparent to-ink-950/15"/>
+      <div class="absolute inset-0 -z-10 hidden lg:block bg-gradient-to-r from-ink-950/30 via-transparent to-transparent"/>
       <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-400/70 to-transparent"/>
 
       <!-- Frame corners -->
@@ -41,10 +41,10 @@
       <!-- Meta row -->
       <div class="absolute top-0 inset-x-0 z-10">
         <div class="wrap flex items-center justify-between pt-8 sm:pt-10 lg:pt-14">
-          <span class="font-mono text-[10px] tracking-[0.26em] text-cream-100/85 uppercase">
+          <span class="font-mono text-[10px] tracking-[0.26em] text-cream-100 uppercase">
             Since 2009, Phnom Penh
           </span>
-          <span class="hidden md:inline font-mono text-[10px] tracking-[0.26em] text-cream-100/55 uppercase">
+          <span class="hidden md:inline font-mono text-[10px] tracking-[0.26em] text-cream-100/80 uppercase">
             Screen / Embroidery / Heat press / Design
           </span>
         </div>
@@ -55,8 +55,8 @@
         <!-- Local scrim: keeps the type crisp without blurring it -->
         <div
             aria-hidden="true"
-            class="absolute inset-x-0 bottom-0 h-[50%] -z-10
-                 bg-gradient-to-t from-ink-950 via-ink-950/80 to-transparent"
+            class="absolute inset-x-0 bottom-0 h-[45%] -z-10
+                 bg-gradient-to-t from-ink-950/85 via-ink-950/50 to-transparent"
         />
 
         <div class="wrap pb-8 sm:pb-12 lg:pb-16">
@@ -65,7 +65,7 @@
             <!-- Headline column -->
             <div class="hero-rise">
               <p class="flex items-center gap-3 font-mono text-[11px] tracking-[0.24em] uppercase
-                        text-cream-100/75 mb-5">
+                        text-cream-100 mb-5">
                 <span class="w-8 h-px bg-blue-400"/>
                 Printing in Phnom Penh, Cambodia
               </p>
@@ -82,7 +82,7 @@
             <!-- Actions column -->
             <div class="hero-rise [animation-delay:.15s]">
               <p
-                  class="hero-text hidden sm:block font-body text-cream-100/90 text-base lg:text-lg
+                  class="hero-text hidden sm:block font-body text-cream-100 text-base lg:text-lg
                        leading-relaxed max-w-[440px] mb-6 lg:mb-7"
               >
                 Business cards, building-scale banners, t-shirts, uniforms and packaging,
@@ -100,8 +100,8 @@
                 <NuxtLink
                     to="/products"
                     class="inline-flex items-center gap-2 px-6 py-3 font-display font-900 uppercase tracking-wide
-                         text-cream-100 border border-white/30 bg-ink-950/40 backdrop-blur-sm
-                         hover:bg-white/10 hover:border-white/70
+                         text-cream-100 border border-white/40 bg-ink-950/50
+                         hover:bg-white/10 hover:border-white
                          transition-all duration-300
                          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
                 >
@@ -113,7 +113,7 @@
         </div>
 
         <!-- Trust band -->
-        <div class="border-t border-white/10 bg-ink-950/85 lg:bg-ink-950/60 lg:backdrop-blur-md">
+        <div class="border-t border-white/10 bg-ink-950/65 lg:bg-ink-950/35">
           <dl class="wrap grid grid-cols-4 divide-x divide-white/10">
             <div
                 v-for="t in trust"
@@ -135,7 +135,7 @@
       <button
           type="button"
           class="hidden lg:flex absolute z-10 right-10 xl:right-14 top-1/2 -translate-y-1/2
-               flex-col items-center gap-4 text-cream-100/70 hover:text-cream-100 transition-colors
+               flex-col items-center gap-4 text-cream-100/90 hover:text-cream-100 transition-colors
                focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-blue-400"
           aria-label="Scroll to services"
           @click="scrollToServices"
@@ -186,11 +186,6 @@
 
     <!-- ══ POPULAR PRODUCTS ════════════════════════════════════════ -->
     <section class="relative py-20 lg:py-32 overflow-hidden" aria-labelledby="products-title">
-      <div
-          aria-hidden="true"
-          class="absolute -top-40 right-[-10%] w-[560px] h-[560px] rounded-full
-               bg-blue-500/[0.06] blur-[140px] pointer-events-none"
-      />
       <div class="wrap relative">
         <header class="grid lg:grid-cols-[1fr_auto] items-end gap-6 lg:gap-12 mb-12 lg:mb-16
                        pb-8 border-b border-white/[0.08]">
@@ -820,7 +815,16 @@ const khmerServices = [
   shadow only separates the glyph edges from the photo underneath.
 */
 .hero-text {
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+  /*
+    No blur filter and no white glow — those were what softened the letters.
+    The scrim is now light so the team photo reads clearly underneath, and the
+    text-shadow does the legibility work alone. Two layers: a tight dark edge
+    that separates each glyph from the photo, plus a slightly larger soft
+    shadow that lifts the word as a whole off the background.
+  */
+  text-shadow:
+      0 1px 1px rgba(0, 0, 0, 0.85),
+      0 2px 6px rgba(0, 0, 0, 0.55);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
