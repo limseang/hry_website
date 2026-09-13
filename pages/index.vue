@@ -22,9 +22,12 @@
           @load="heroReady = true"
       />
 
-      <!-- Legibility layers: bottom fade for text, light top fade for the meta row -->
-      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950 via-ink-950/30 to-ink-950/50"/>
-      <div class="absolute inset-0 -z-10 hidden lg:block bg-gradient-to-r from-ink-950/75 via-ink-950/15 to-transparent"/>
+      <!--
+        Legibility layers, kept light. The heavy lifting now happens in the
+        local scrim behind the headline, so the photo stays visible elsewhere.
+      -->
+      <div class="absolute inset-0 -z-10 bg-gradient-to-t from-ink-950/60 via-transparent to-ink-950/40"/>
+      <div class="absolute inset-0 -z-10 hidden lg:block bg-gradient-to-r from-ink-950/55 via-transparent to-transparent"/>
       <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-blue-400/70 to-transparent"/>
 
       <!-- Frame corners -->
@@ -49,31 +52,38 @@
 
       <!-- Headline + actions -->
       <div class="relative z-10 h-full flex flex-col justify-end">
+        <!-- Local scrim: keeps the type crisp without blurring it -->
+        <div
+            aria-hidden="true"
+            class="absolute inset-x-0 bottom-0 h-[50%] -z-10
+                 bg-gradient-to-t from-ink-950 via-ink-950/80 to-transparent"
+        />
+
         <div class="wrap pb-8 sm:pb-12 lg:pb-16">
           <div class="grid lg:grid-cols-[1.25fr_0.75fr] gap-7 lg:gap-16 items-end">
 
             <!-- Headline column -->
             <div class="hero-rise">
-              <p
-                  class="font-body text-cream-100/80 text-sm sm:text-base mb-4 hero-text-soft"
-              >
+              <p class="flex items-center gap-3 font-mono text-[11px] tracking-[0.24em] uppercase
+                        text-cream-100/75 mb-5">
+                <span class="w-8 h-px bg-blue-400"/>
                 Printing in Phnom Penh, Cambodia
               </p>
               <h1
                   id="hero-title"
-                  class="font-display font-900 uppercase leading-[0.86] tracking-tight text-cream-100
-                       text-[clamp(3rem,9vw,8rem)]
-                       hero-text-soft"
+                  class="hero-text font-display font-900 uppercase leading-[0.86] tracking-tight
+                       text-cream-100 text-[clamp(3rem,9vw,8rem)]"
               >
-                From design<br/>to reality
+                From design<br/>
+                <span class="text-blue-400">to reality</span>
               </h1>
             </div>
 
             <!-- Actions column -->
             <div class="hero-rise [animation-delay:.15s]">
               <p
-                  class="hidden sm:block font-body text-cream-100/85 text-base lg:text-lg leading-relaxed
-                       max-w-[440px] mb-6 lg:mb-7 hero-text-soft"
+                  class="hero-text hidden sm:block font-body text-cream-100/90 text-base lg:text-lg
+                       leading-relaxed max-w-[440px] mb-6 lg:mb-7"
               >
                 Business cards, building-scale banners, t-shirts, uniforms and packaging,
                 printed in our own shop in Phnom Penh.
@@ -90,7 +100,8 @@
                 <NuxtLink
                     to="/products"
                     class="inline-flex items-center gap-2 px-6 py-3 font-display font-900 uppercase tracking-wide
-                         text-cream-100 border border-white/25 hover:bg-white/10 hover:border-white/60
+                         text-cream-100 border border-white/30 bg-ink-950/40 backdrop-blur-sm
+                         hover:bg-white/10 hover:border-white/70
                          transition-all duration-300
                          focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-400"
                 >
@@ -803,19 +814,16 @@ const khmerServices = [
 }
 
 /*
-  Soft blur / bloom on hero text.
-  Layered text-shadows at increasing radii simulate a gentle glow that
-  makes the letters feel slightly soft and out-of-focus, like a premium
-  matte print — without sacrificing readability.
+  Crisp hero text.
+  No blur filter and no white glow — those were what softened the letters.
+  Contrast comes from the dark scrim behind the text; the single tight
+  shadow only separates the glyph edges from the photo underneath.
 */
-.hero-text-soft {
-  text-shadow:
-      0 0 0.6px rgba(255, 255, 255, 0.35),
-      0 1px 2px  rgba(0, 0, 0, 0.45),
-      0 2px 8px  rgba(0, 0, 0, 0.35),
-      0 6px 24px rgba(0, 0, 0, 0.30);
-  filter: blur(0.35px);
-  -webkit-filter: blur(0.35px);
+.hero-text {
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.55);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /*
